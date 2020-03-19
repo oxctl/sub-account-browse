@@ -120,10 +120,15 @@ class App extends React.Component {
                         handleLoginDone={() => this.setState({ needsToken: false })}>
       <ListAccounts token={this.state.token} url={this.state.proxyUrl} accountId={this.state.accountId}
                     accountName={this.state.accountName}
-                    handle403={() => this.setState({ needsToken: true })}
+                    handle403={this.handle403}
                     handleError={(reason) => this.setState({error: reason.message})}
       />
     </LaunchOAuth>
+  }
+
+  handle403 = () => {
+    this.setState({ needsToken: true });
+    return Promise.reject("403");
   }
 }
 

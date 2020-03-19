@@ -50,7 +50,7 @@ class ListAccounts extends React.Component {
         } else if (response.status === 401) {
           const authHeader = response.headers.get('WWW-Authenticate')
           if (authHeader && !authHeader.includes('proxy')) {
-            this.props.handle403()
+            return this.props.handle403()
           } else {
             throw new Error('You don\'t have permission to see the list of accounts.')
           }
