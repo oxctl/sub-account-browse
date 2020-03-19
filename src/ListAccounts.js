@@ -8,6 +8,7 @@ import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 
 import { Loading } from './Loading'
 import { IconButton } from '@instructure/ui-buttons'
+import { Text } from '@instructure/ui-text'
 
 
 class ListAccounts extends React.Component {
@@ -63,7 +64,7 @@ class ListAccounts extends React.Component {
     ).then(json => {
       /* eslint-disable no-param-reassign */
       var collections = json
-        .map(account => ({ id: account.id, name: account.name }))
+        .map(account => ({ id: account.id, name: account.name, sis_id: account.sis_account_id }))
         .reduce((collections, account) => {
           collections[account.id] = account
           return collections
@@ -114,6 +115,7 @@ class ListAccounts extends React.Component {
           {(this.isOpen(item.id))?<IconArrowUpLine size="x-small"/>:<IconArrowDownLine size="x-small"/>}
         </IconButton>
         <Link href={"https://oxeval.instructure.com/accounts/"+ item.id} target="_top">{item.name}</Link>
+        {(item.sis_id)?<Text size="small" color="secondary">({item.sis_id})</Text>:null}
         {(this.state.open.includes(item.id))?this.renderList(collections, item.id):null}
       </List.Item>
     })
