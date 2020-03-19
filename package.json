@@ -1,5 +1,5 @@
 {
-  "name": "canvas-sub-accounts",
+  "name": "canvas-subaccounts",
   "version": "1.0.0",
   "scripts": {
     "start": "ui-build --bundle --watch -p 3000",
