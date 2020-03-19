@@ -12,6 +12,7 @@ import { IconSubaccountsLine } from '@instructure/ui-icons'
 
 import { Loading } from './Loading'
 import { View } from '@instructure/ui-view'
+import { IconButton } from '@instructure/ui-buttons'
 
 
 class ListAccounts extends React.Component {
@@ -113,7 +114,9 @@ class ListAccounts extends React.Component {
     return children.map(child => {
       const item = collections[child]
       return <List.Item key={item.id}>
-        <IconSubaccountsLine size="small" onClick={() => this.handleIconClick(item.id)}/>
+        <IconButton withBackground={false} withBorder={false} screenReaderLabel="Toggle accounts" margin="x-small" onClick={() => this.handleIconClick(item.id)}>
+          <IconSubaccountsLine size="small"/>
+        </IconButton>
         <View padding="small none" >
         <Link href={"https://oxeval.instructure.com/accounts/"+ item.id} target="_top">{item.name}</Link>
         </View>
