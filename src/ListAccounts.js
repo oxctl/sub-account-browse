@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Heading } from '@instructure/ui-heading'
 import { List } from '@instructure/ui-list'
 import { Link } from '@instructure/ui-link'
 
