@@ -127,8 +127,8 @@ class App extends React.Component {
   }
 
   handle403 = () => {
-    this.setState({ needsToken: true });
-    return Promise.reject("403");
+    this.setState({ needsToken: true })
+    return Promise.reject("403")
   }
 }
 

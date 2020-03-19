@@ -61,12 +61,14 @@ class ListAccounts extends React.Component {
       return response
     }).then(response => response.json()
     ).then(json => {
+      /* eslint-disable no-param-reassign */
       var collections = json
         .map(account => ({ id: account.id, name: account.name }))
         .reduce((collections, account) => {
           collections[account.id] = account
           return collections
         }, {})
+      /* eslint-enable no-param-reassign */
       let parents = Object.keys(collections)
       collections = {...this.state.collections, ...collections}
       collections[accountId] = {
@@ -104,7 +106,7 @@ class ListAccounts extends React.Component {
   }
 
   renderListItems(collections, id) {
-    const children = collections[id].collections;
+    const children = collections[id].collections
     return children.map(child => {
       const item = collections[child]
       return <List.Item key={item.id}>
@@ -123,11 +125,10 @@ class ListAccounts extends React.Component {
     } else {
       this.toggle(id)
     }
-    console.log(id);
   }
 
   isOpen(id) {
-    return this.state.open.includes(id);
+    return this.state.open.includes(id)
   }
 
   toggle(id) {
