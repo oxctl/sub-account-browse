@@ -109,17 +109,24 @@ class ListAccounts extends React.Component {
 
   renderListItems(collections, id) {
     const children = collections[id].collections
-    return children.map(child => {
-      const item = collections[child]
-      return <List.Item key={item.id}>
-        <IconButton withBackground={false} withBorder={false} screenReaderLabel="Toggle accounts" margin="x-small" onClick={() => this.handleIconClick(item.id)}>
-          {(this.isOpen(item.id))?<IconArrowUpLine size="x-small"/>:<IconArrowDownLine size="x-small"/>}
-        </IconButton>
-        <Link href={this.props.canvasUrl+ "/accounts/"+ item.id} target="_top">{item.name}</Link>
-        {(item.sis_id)?<Text size="small" color="secondary">({item.sis_id})</Text>:null}
-        {(this.state.open.includes(item.id))?this.renderList(collections, item.id):null}
+    if (children.length === 0) {
+      return <List.Item key="empty">
+        <Text color="secondary">No sub-accounts</Text>
       </List.Item>
-    })
+    } else {
+      return children.map(child => {
+        const item = collections[child]
+        return <List.Item key={item.id}>
+          <IconButton withBackground={false} withBorder={false} screenReaderLabel="Toggle accounts" margin="x-small"
+                      onClick={() => this.handleIconClick(item.id)}>
+            {(this.isOpen(item.id)) ? <IconArrowUpLine size="x-small"/> : <IconArrowDownLine size="x-small"/>}
+          </IconButton>
+          <Link href={this.props.canvasUrl + "/accounts/" + item.id} target="_top">{item.name}</Link>
+          {(item.sis_id) ? <Text size="small" color="secondary">({item.sis_id})</Text> : null}
+          {(this.state.open.includes(item.id)) ? this.renderList(collections, item.id) : null}
+        </List.Item>
+      })
+    }
   }
 
   handleIconClick(id) {
