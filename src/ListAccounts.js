@@ -16,6 +16,7 @@ class ListAccounts extends React.Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    canvasUrl: PropTypes.string.isRequired,
     accountId: PropTypes.number.isRequired,
     accountName: PropTypes.string.isRequired,
     handle403: PropTypes.func.isRequired,
@@ -114,7 +115,7 @@ class ListAccounts extends React.Component {
         <IconButton withBackground={false} withBorder={false} screenReaderLabel="Toggle accounts" margin="x-small" onClick={() => this.handleIconClick(item.id)}>
           {(this.isOpen(item.id))?<IconArrowUpLine size="x-small"/>:<IconArrowDownLine size="x-small"/>}
         </IconButton>
-        <Link href={"https://oxeval.instructure.com/accounts/"+ item.id} target="_top">{item.name}</Link>
+        <Link href={this.props.canvasUrl+ "/accounts/"+ item.id} target="_top">{item.name}</Link>
         {(item.sis_id)?<Text size="small" color="secondary">({item.sis_id})</Text>:null}
         {(this.state.open.includes(item.id))?this.renderList(collections, item.id):null}
       </List.Item>

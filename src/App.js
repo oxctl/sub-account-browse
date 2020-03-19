@@ -119,7 +119,7 @@ class App extends React.Component {
                         url={this.state.proxyUrl + '/tokens/check'}
                         handleLoginDone={() => this.setState({ needsToken: false })}>
       <ListAccounts token={this.state.token} url={this.state.proxyUrl} accountId={this.state.accountId}
-                    accountName={this.state.accountName}
+                    accountName={this.state.accountName} canvasUrl={this.state.canvasUrl}
                     handle403={this.handle403}
                     handleError={(reason) => this.setState({error: reason.message})}
       />
