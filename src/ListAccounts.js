@@ -1,17 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Heading } from '@instructure/ui-heading'
-import { TreeBrowser } from '@instructure/ui-tree-browser'
 import { List } from '@instructure/ui-list'
 import { Link } from '@instructure/ui-link'
 
-import { IconSubaccountsLine } from '@instructure/ui-icons'
-
-
+import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 
 
 import { Loading } from './Loading'
-import { View } from '@instructure/ui-view'
 import { IconButton } from '@instructure/ui-buttons'
 
 
@@ -90,7 +86,6 @@ class ListAccounts extends React.Component {
 
   render() {
     return (<React.Fragment>
-      <Heading>Sub Accounts</Heading>
       {(this.state.tryLoading) ? <Loading/> : this.renderData()}
     </React.Fragment>)
   }
@@ -115,11 +110,9 @@ class ListAccounts extends React.Component {
       const item = collections[child]
       return <List.Item key={item.id}>
         <IconButton withBackground={false} withBorder={false} screenReaderLabel="Toggle accounts" margin="x-small" onClick={() => this.handleIconClick(item.id)}>
-          <IconSubaccountsLine size="small"/>
+          {(this.isOpen(item.id))?<IconArrowUpLine size="x-small"/>:<IconArrowDownLine size="x-small"/>}
         </IconButton>
-        <View padding="small none" >
         <Link href={"https://oxeval.instructure.com/accounts/"+ item.id} target="_top">{item.name}</Link>
-        </View>
         {(this.state.open.includes(item.id))?this.renderList(collections, item.id):null}
       </List.Item>
     })
@@ -134,8 +127,12 @@ class ListAccounts extends React.Component {
     console.log(id);
   }
 
+  isOpen(id) {
+    return this.state.open.includes(id);
+  }
+
   toggle(id) {
-    if(this.state.open.includes(id)) {
+    if(this.isOpen(id)) {
       this.setState({open: this.state.open.filter(item => item !== id)})
     } else {
       this.setState({open: this.state.open.concat(id)})
