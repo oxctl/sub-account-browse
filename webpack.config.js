@@ -22,11 +22,24 @@
  * SOFTWARE.
  */
 
+const fs = require('fs')
 const path = require('path')
 const baseConfig = require('@instructure/ui-webpack-config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const outputPath = path.resolve(__dirname, '__build__')
+const keyPath = path.resolve(__dirname, 'localhost-key.pem')
+const certPath = path.resolve(__dirname, 'localhost.pem')
+
+// Check that we have certificate files and if so load and use them
+let devServerConfig = {}
+if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+  devServerConfig = {
+    https: true,
+    key: fs.readFileSync(keyPath),
+    cert: fs.readFileSync(certPath)
+  }
+}
 
 module.exports = {
   ...baseConfig,
@@ -37,8 +50,8 @@ module.exports = {
   },
   devServer: {
     contentBase: outputPath,
-    https: true,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    ...devServerConfig
   },
   devtool: 'source-map',
   plugins: [

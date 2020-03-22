@@ -7,15 +7,14 @@ To enable SSL in development:
  
 * Install [mkcert](https://github.com/FiloSottile/mkcert)
 * Create a cert for localhost: `mkcert localhost`
-* Copy public/private key into webpack dev server module:
-`cat localhost-key.pem localhost.pem > ./node_modules/webpack-dev-server/ssl/server.pem`
-* Tell npn to always start in HTTPS mode: `echo HTTPS=true >> .env.development.local`
 * Start dev server: `npm start`
+
+This works because our webpack config checks for `localhost.pem` and `localhost-key.pem` and if they exist starts in HTTPS mode instead.
 
 
 ## Configuration
 
-This tool needs to have a developer key setup for it with permission to view account sub accounts.
+This tool needs to have a developer key setup for it with permission to view account sub accounts. 
 
 
 ## Deployment
