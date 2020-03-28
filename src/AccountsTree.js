@@ -16,7 +16,7 @@ import { Spinner } from '@instructure/ui-spinner'
 /**
  * Simple component to display all the sub-account from where we are.
  */
-class ListAccounts extends React.Component {
+class AccountsTree extends React.Component {
 
   static propTypes = {
     token: PropTypes.string.isRequired,
@@ -52,7 +52,7 @@ class ListAccounts extends React.Component {
       loadAll: true,
       loadingAll: true
     })
-    let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=5&recursive=true'
+    let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=100&recursive=true'
     const data = []
     do {
       const response = await fetch(url, {
@@ -81,7 +81,7 @@ class ListAccounts extends React.Component {
 
   loadAccounts(accountId) {
     // TODO, need to handle proper paging
-    return fetch(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=1000', {
+    return fetch(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=100', {
       headers: new Headers({
         'Authorization': 'Bearer ' + this.props.token
       })
@@ -216,4 +216,4 @@ class ListAccounts extends React.Component {
 
 }
 
-export default ListAccounts
+export default AccountsTree

@@ -28,7 +28,7 @@ import '@instructure/canvas-theme'
 import jwtDecode from 'jwt-decode'
 import LtiApplyTheme from './LtiApplyTheme'
 import LaunchOAuth from './LaunchOAuth'
-import ListAccounts from './ListAccounts'
+import AccountsTree from './AccountsTree'
 import { View } from '@instructure/ui-view'
 import { Loading } from './Loading'
 import Error from './Error/Error'
@@ -118,7 +118,7 @@ class App extends React.Component {
     return <LaunchOAuth needsToken={this.state.needsToken} jwt={this.state.token}
                         url={this.state.proxyUrl + '/tokens/check'}
                         handleLoginDone={() => this.setState({ needsToken: false })}>
-      <ListAccounts token={this.state.token} url={this.state.proxyUrl} accountId={this.state.accountId}
+      <AccountsTree token={this.state.token} url={this.state.proxyUrl} accountId={this.state.accountId}
                     accountName={this.state.accountName} canvasUrl={this.state.canvasUrl}
                     handle403={this.handle403}
                     handleError={(reason) => this.setState({error: reason.message})}
