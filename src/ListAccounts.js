@@ -9,6 +9,7 @@ import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 import { Loading } from './Loading'
 import { IconButton } from '@instructure/ui-buttons'
 import { Text } from '@instructure/ui-text'
+import { Spinner } from '@instructure/ui-spinner'
 
 
 class ListAccounts extends React.Component {
@@ -110,6 +111,10 @@ class ListAccounts extends React.Component {
 
   renderListItems(collections, id) {
     const children = collections[id].collections
+    // Shortcut if no children (we haven't loaded them yet
+    if (!children) {
+      return <List.Item key="loading"><Spinner renderTitle="Loading" size="small" margin="small"/></List.Item>
+    }
     if (children.length === 0) {
       return <List.Item key="empty">
         <Text color="secondary">No sub-accounts</Text>
@@ -118,11 +123,8 @@ class ListAccounts extends React.Component {
       return children.map(child => {
         const item = collections[child]
         return <List.Item key={item.id}>
-          <IconButton withBackground={false} withBorder={false} screenReaderLabel="Toggle accounts" margin="x-small"
-                      onClick={() => this.handleIconClick(item.id)}>
-            {(this.isOpen(item.id)) ? <IconArrowUpLine size="x-small"/> : <IconArrowDownLine size="x-small"/>}
-          </IconButton>
-          <Link href={this.props.canvasUrl + "/accounts/" + item.id} target="_top">{item.name}</Link>
+          {this.renderIcon(item)}
+          <Link href={this.props.canvasUrl + '/accounts/' + item.id} target="_top">{item.name}</Link>
           {(item.sis_id) ? <Text size="small" color="secondary">({item.sis_id})</Text> : null}
           {(this.state.open.includes(item.id)) ? this.renderList(collections, item.id) : null}
         </List.Item>
@@ -130,11 +132,18 @@ class ListAccounts extends React.Component {
     }
   }
 
+  renderIcon(item) {
+    const isOpen = this.isOpen(item.id)
+    return <IconButton withBackground={false} withBorder={false} screenReaderLabel="Toggle accounts" margin="x-small"
+                       onClick={() => this.handleIconClick(item.id)}>
+      {(isOpen) ? <IconArrowUpLine size="x-small"/> : <IconArrowDownLine size="x-small"/>}
+    </IconButton>
+  }
+
   handleIconClick(id) {
-    if(!this.state.collections[id].collections) {
-      this.loadAccounts(id).then(() => this.toggle(id))
-    } else {
-      this.toggle(id)
+    this.toggle(id)
+    if (!this.state.collections[id].collections) {
+      this.loadAccounts(id)
     }
   }
 
