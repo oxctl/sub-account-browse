@@ -65,7 +65,7 @@ class ListAccounts extends React.Component {
         const json = await response.json()
         data.push(...json)
         const links = parseLinkHeader(response.headers.get('Link'))
-        if(links.next)
+        if (links.next)
           url = links.next.url
       }
     } while (url)
@@ -116,7 +116,12 @@ class ListAccounts extends React.Component {
   updateCollections(json, loadedAccounts) {
     /* eslint-disable no-param-reassign */
     var collections = json
-      .map(account => ({ id: account.id, name: account.name, sis_id: account.sis_account_id, parent_id: account.parent_account_id }))
+      .map(account => ({
+        id: account.id,
+        name: account.name,
+        sis_id: account.sis_account_id,
+        parent_id: account.parent_account_id
+      }))
       .reduce((collections, account) => {
         collections[account.id] = account
         return collections
@@ -146,7 +151,8 @@ class ListAccounts extends React.Component {
   renderData() {
     const collections = this.state.collections
     return <React.Fragment>
-      <Button onClick={() => this.loadAll(this.props.accountId)} interaction={this.state.loadAll?"disabled":'enabled'}>Expand All</Button>
+      <Button onClick={() => this.loadAll(this.props.accountId)}
+              interaction={this.state.loadAll ? 'disabled' : 'enabled'}>Expand All</Button>
       {this.renderList(collections, this.props.accountId)}
     </React.Fragment>
 
