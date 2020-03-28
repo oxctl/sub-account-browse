@@ -32,8 +32,8 @@ class ListAccounts extends React.Component {
   componentDidMount() {
 
     const root = {}
-    root[this.props.accountId] = {id: this.props.accountId, name: this.props.accountName}
-    this.setState({collections: root})
+    root[this.props.accountId] = { id: this.props.accountId, name: this.props.accountName }
+    this.setState({ collections: root })
 
     if (this.state.tryLoading) {
       this.loadAccounts(this.props.accountId)
@@ -73,7 +73,7 @@ class ListAccounts extends React.Component {
         }, {})
       /* eslint-enable no-param-reassign */
       let parents = Object.keys(collections)
-      collections = {...this.state.collections, ...collections}
+      collections = { ...this.state.collections, ...collections }
       collections[accountId] = {
         ...collections[accountId],
         collections: parents
@@ -143,10 +143,10 @@ class ListAccounts extends React.Component {
   }
 
   toggle(id) {
-    if(this.isOpen(id)) {
-      this.setState({open: this.state.open.filter(item => item !== id)})
+    if (this.isOpen(id)) {
+      this.setState({ open: this.state.open.filter(item => item !== id) })
     } else {
-      this.setState({open: this.state.open.concat(id)})
+      this.setState({ open: this.state.open.concat(id) })
     }
   }
 
