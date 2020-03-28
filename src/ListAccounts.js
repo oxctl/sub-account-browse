@@ -1,17 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import parseLinkHeader from 'parse-link-header'
+
 import { List } from '@instructure/ui-list'
 import { Link } from '@instructure/ui-link'
 
 import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 
-
 import { Loading } from './Loading'
-import { IconButton } from '@instructure/ui-buttons'
+import { Button, IconButton } from '@instructure/ui-buttons'
 import { Text } from '@instructure/ui-text'
 import { Spinner } from '@instructure/ui-spinner'
 
 
+/**
+ * Simple component to display all the sub-account from where we are.
+ */
 class ListAccounts extends React.Component {
 
   static propTypes = {
@@ -27,7 +31,9 @@ class ListAccounts extends React.Component {
   state = {
     accounts: null,
     open: [],
-    tryLoading: true
+    tryLoading: true,
+    loadAll: false,
+    loadingAll: false
   }
 
   componentDidMount() {
@@ -41,6 +47,38 @@ class ListAccounts extends React.Component {
     }
   }
 
+  async loadAll(accountId) {
+    this.setState({
+      loadAll: true,
+      loadingAll: true
+    })
+    let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=5&recursive=true'
+    const data = []
+    do {
+      const response = await fetch(url, {
+        headers: new Headers({
+          'Authorization': 'Bearer ' + this.props.token
+        })
+      })
+      url = null
+      if (response.ok) {
+        const json = await response.json()
+        data.push(...json)
+        const links = parseLinkHeader(response.headers.get('Link'))
+        if(links.next)
+          url = links.next.url
+      }
+    } while (url)
+    const collections = this.updateCollections(data)
+    const open = Object.values(collections).filter(account => account.collections).map(account => account.id)
+    this.setState({
+      collections: collections,
+      open: open,
+      loadingAll: false
+    })
+
+  }
+
   loadAccounts(accountId) {
     // TODO, need to handle proper paging
     return fetch(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=1000', {
@@ -50,7 +88,7 @@ class ListAccounts extends React.Component {
     }).then(response => {
       if (!response.ok) {
         if (response.status === 403) {
-          this.props.handle403()
+          return this.props.handle403()
         } else if (response.status === 401) {
           const authHeader = response.headers.get('WWW-Authenticate')
           if (authHeader && !authHeader.includes('proxy')) {
@@ -65,22 +103,8 @@ class ListAccounts extends React.Component {
       return response
     }).then(response => response.json()
     ).then(json => {
-      /* eslint-disable no-param-reassign */
-      var collections = json
-        .map(account => ({ id: account.id, name: account.name, sis_id: account.sis_account_id }))
-        .reduce((collections, account) => {
-          collections[account.id] = account
-          return collections
-        }, {})
-      /* eslint-enable no-param-reassign */
-      let parents = Object.keys(collections)
-      collections = { ...this.state.collections, ...collections }
-      collections[accountId] = {
-        ...collections[accountId],
-        collections: parents
-      }
       this.setState({
-        collections: collections
+        collections: this.updateCollections(json, [accountId])
       })
     }).catch(reason => {
       this.props.handleError(reason)
@@ -89,6 +113,30 @@ class ListAccounts extends React.Component {
     })
   }
 
+  updateCollections(json, loadedAccounts) {
+    /* eslint-disable no-param-reassign */
+    var collections = json
+      .map(account => ({ id: account.id, name: account.name, sis_id: account.sis_account_id, parent_id: account.parent_account_id }))
+      .reduce((collections, account) => {
+        collections[account.id] = account
+        return collections
+      }, {})
+
+    // If we don't have accounts that got loaded assume it's everything in the loaded data
+    loadedAccounts = loadedAccounts || Object.keys(collections)
+
+    // Build map of parents to array of children
+    const children = {}
+    Object.values(collections).forEach(account => (children[account.parent_id] = children[account.parent_id] || []).push(account.id))
+    collections = { ...this.state.collections, ...collections }
+    // Set the account that we know have no children
+    loadedAccounts.forEach(account => collections[account].collections = [])
+    // Update all the children
+    Object.entries(children).forEach(([parent, children]) => collections[parent].collections = children)
+    return collections;
+  }
+
+
   render() {
     return (<React.Fragment>
       {(this.state.tryLoading) ? <Loading/> : this.renderData()}
@@ -96,8 +144,9 @@ class ListAccounts extends React.Component {
   }
 
   renderData() {
-    var collections = this.state.collections
+    const collections = this.state.collections
     return <React.Fragment>
+      <Button onClick={() => this.loadAll(this.props.accountId)} interaction={this.state.loadAll?"disabled":'enabled'}>Expand All</Button>
       {this.renderList(collections, this.props.accountId)}
     </React.Fragment>
 
