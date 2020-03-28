@@ -41,7 +41,8 @@ class ListAccounts extends React.Component {
   }
 
   loadAccounts(accountId) {
-    return fetch(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts', {
+    // TODO, need to handle proper paging
+    return fetch(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=1000', {
       headers: new Headers({
         'Authorization': 'Bearer ' + this.props.token
       })
