@@ -70,7 +70,7 @@ class AccountsTree extends React.Component {
       }
     } while (url)
     const collections = this.updateCollections(data)
-    const open = Object.values(collections).filter(account => account.collections).map(account => account.id)
+    const open = Object.values(collections).filter(account => account.collections).reduce((open,account) => {open[account.id] = true; return open}, {})
     this.setState({
       collections: collections,
       open: open,
