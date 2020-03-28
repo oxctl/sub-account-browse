@@ -30,7 +30,7 @@ class ListAccounts extends React.Component {
 
   state = {
     accounts: null,
-    open: [],
+    open: {},
     tryLoading: true,
     loadAll: false,
     loadingAll: false
@@ -197,15 +197,15 @@ class ListAccounts extends React.Component {
   }
 
   isOpen(id) {
-    return this.state.open.includes(id)
+    return this.state.open[id]
   }
 
   toggle(id) {
-    if (this.isOpen(id)) {
-      this.setState({ open: this.state.open.filter(item => item !== id) })
-    } else {
-      this.setState({ open: this.state.open.concat(id) })
-    }
+    this.setState((state) => {
+      const update = {}
+      update[id] = !state.open[id]
+      return { open: { ...state.open, ...update }  }
+      })
   }
 
 }
