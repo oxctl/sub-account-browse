@@ -175,7 +175,7 @@ class ListAccounts extends React.Component {
           {this.renderIcon(item)}
           <Link href={this.props.canvasUrl + '/accounts/' + item.id} target="_top">{item.name}</Link>
           {(item.sis_id) ? <Text size="small" color="secondary">({item.sis_id})</Text> : null}
-          {(this.state.open.includes(item.id)) ? this.renderList(collections, item.id) : null}
+          {(this.isOpen(item.id)) ? this.renderList(collections, item.id) : null}
         </List.Item>
       })
     }
