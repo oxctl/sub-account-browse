@@ -65,7 +65,7 @@ class AccountsTree extends React.Component {
         const json = await response.json()
         data.push(...json)
         const links = parseLinkHeader(response.headers.get('Link'))
-        if (links.next)
+        if (links && links.next)
           url = links.next.url
       }
     } while (url)
