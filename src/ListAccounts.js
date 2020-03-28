@@ -55,7 +55,7 @@ class ListAccounts extends React.Component {
           if (authHeader && !authHeader.includes('proxy')) {
             return this.props.handle403()
           } else {
-            throw new Error('You don\'t have permission to see the list of accounts.')
+            throw new Error('You don\'t have permission to see the list of accounts. Or your session has expired, please try relaunching the tool')
           }
         } else {
           throw new Error('Bad response: ' + response.status)
