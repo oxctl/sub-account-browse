@@ -133,7 +133,7 @@ class ListAccounts extends React.Component {
     loadedAccounts.forEach(account => collections[account].collections = [])
     // Update all the children
     Object.entries(children).forEach(([parent, children]) => collections[parent].collections = children)
-    return collections;
+    return collections
   }
 
 
