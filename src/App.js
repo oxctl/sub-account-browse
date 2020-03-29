@@ -24,7 +24,7 @@
 
 import React from 'react'
 
-import '@instructure/canvas-theme'
+import { theme } from '@instructure/canvas-theme'
 import jwtDecode from 'jwt-decode'
 import LtiApplyTheme from './LtiApplyTheme'
 import LaunchOAuth from './LaunchOAuth'
@@ -41,6 +41,8 @@ const settings = {
     'proxyServer': 'https://proxy.canvas.ox.ac.uk'
   }
 }
+
+theme.use()
 
 class App extends React.Component {
   state = {
