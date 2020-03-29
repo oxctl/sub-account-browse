@@ -53,7 +53,6 @@ module.exports = {
     host: '0.0.0.0',
     ...devServerConfig
   },
-  devtool: 'source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
