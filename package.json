@@ -12,6 +12,7 @@
   "browserslist": [
     "> 5% in GB"
   ],
+  "private": true,
   "dependencies": {
     "@instructure/canvas-theme": "^6.21.0",
     "@instructure/ui-avatar": "^6.21.0",
