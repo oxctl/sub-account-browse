@@ -2,15 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import parseLinkHeader from 'parse-link-header'
 
-import { List } from '@instructure/ui-list'
-import { Link } from '@instructure/ui-link'
-
-import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
-
 import { Loading } from './Loading'
-import { Button, IconButton } from '@instructure/ui-buttons'
-import { Text } from '@instructure/ui-text'
-import { Spinner } from '@instructure/ui-spinner'
+import { Button } from '@instructure/ui-buttons'
 import ListAccounts from './ListAccounts'
 
 
