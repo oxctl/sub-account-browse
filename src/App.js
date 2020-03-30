@@ -73,19 +73,19 @@ class App extends React.Component {
           body: formData
         }
       ).then(response => {
-        if (!response.ok) {
-          const token = localStorage.getItem("token")
-          if (token) {
-            this.updateToken(token, servers)
+          if (!response.ok) {
+            const token = localStorage.getItem('token')
+            if (token) {
+              this.updateToken(token, servers)
+            }
+          } else {
+            return response
           }
-        } else {
-          return response
         }
-      }
       ).then(response => response.json()
       ).then(json => {
         this.token = json.token_value
-        localStorage.setItem("token", json.token_value)
+        localStorage.setItem('token', json.token_value)
         this.updateToken(json.token_value, servers)
       }).finally(() => {
         // this.setState({ loading: false })
@@ -107,13 +107,15 @@ class App extends React.Component {
   }
 
   render() {
-    return (<LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl}>
-      <View padding="small">
-        <Error message={this.state.error}>
-          {(this.state.loading) ? <Loading/> : this.renderContent()}
-        </Error>
-      </View>
-    </LtiApplyTheme>)
+    return (
+      <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl}>
+        <View padding="small">
+          <Error message={this.state.error}>
+            {(this.state.loading) ? <Loading/> : this.renderContent()}
+          </Error>
+        </View>
+      </LtiApplyTheme>
+    )
   }
 
   renderContent() {
@@ -123,14 +125,14 @@ class App extends React.Component {
       <AccountsTree token={this.state.token} url={this.state.proxyUrl} accountId={this.state.accountId}
                     accountName={this.state.accountName} canvasUrl={this.state.canvasUrl}
                     handle403={this.handle403}
-                    handleError={(reason) => this.setState({error: reason.message})}
+                    handleError={(reason) => this.setState({ error: reason.message })}
       />
     </LaunchOAuth>
   }
 
   handle403 = () => {
     this.setState({ needsToken: true })
-    return Promise.reject("403")
+    return Promise.reject('403')
   }
 }
 
