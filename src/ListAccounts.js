@@ -43,7 +43,7 @@ class ListAccounts extends React.Component {
 
   renderIcon(item) {
     const isOpen = this.isOpen(item.id)
-    return <IconButton withBackground={false} withBorder={false} screenReaderLabel="Toggle accounts" margin="x-small"
+    return <IconButton withBackground={false} withBorder={false} screenReaderLabel={(isOpen)?"Collapse sub-accounts":"Expand sub-accounts"} margin="x-small"
                        onClick={() => this.props.handleIconClick(item.id)}>
       {(isOpen) ? <IconArrowUpLine size="x-small"/> : <IconArrowDownLine size="x-small"/>}
     </IconButton>
