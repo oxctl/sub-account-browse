@@ -6,7 +6,7 @@ import { Link } from '@instructure/ui-link'
 import { IconButton } from '@instructure/ui-buttons'
 import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 
-class ListAccounts extends React.Component {
+class ListAccounts extends React.PureComponent {
 
   render() {
     return this.renderList(this.props.id)
