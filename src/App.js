@@ -35,7 +35,10 @@ import Error from './Error/Error'
 
 
 const settings = {
-  'https://localhost:3000': { 'ltiServer': 'https://localhost:28443', 'proxyServer': 'https://localhost:8443' },
+  'https://localhost:3000': {
+    'ltiServer': 'https://localhost:28443',
+    'proxyServer': 'https://localhost:18443'
+  },
   'https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com': {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
     'proxyServer': 'https://proxy.canvas.ox.ac.uk'
