@@ -1,0 +1,115 @@
+language: node_js
+
+node_js:
+  - 12.4.0
+
+# PR branches will be built as PRs.
+branches:
+  only:
+    - master
+
+build:
+  cache: true
+  cache_dir_list:
+    - $SHIPPABLE_BUILD_DIR/node_modules
+  ci:
+    - npm install
+    - npm test
+    - npm run build
+
+  on_success:
+    - tar -C $SHIPPABLE_BUILD_DIR/__build__ -zcvf $SHIPPABLE_BUILD_DIR/build-${BRANCH}.${BUILD_NUMBER}.tgz .
+    - aws s3 cp $SHIPPABLE_BUILD_DIR/build-${BRANCH}.${BUILD_NUMBER}.tgz s3://${S3_ARTIFACT_BUCKET}/ --region "${S3_ARTIFACT_REGION}"
+    - shipctl post_resource_state_multi "canvas-subaccounts-artifact" "versionName=${BRANCH}.${BUILD_NUMBER}"
+
+integrations:
+  hub:
+    - integrationName: AWS(dev)
+      region: eu-west-1
+      type: amazonKeys
+  notifications:
+    - integrationName: email
+      type: email
+      recipients:
+        - matthew.buckett@ctl.ox.ac.uk
+      on_success: change
+      on_failure: change
+      on_cancel: change
+      on_start: never
+      on_pull_request: never
+
+resources:
+  - name: canvas-subaccounts-artifact
+    type: params
+    versionTemplate:
+      params:
+        versionName: "latest"
+  - name: canvas-subaccount-aws
+    type: cliConfig
+    integration: AWS(dev)
+    pointer:
+      region: eu-west-1
+  - name: canvas-subaccounts-s3-artifacts
+    type: params
+    versionTemplate:
+      params:
+        S3_ARTIFACT_BUCKET: "oxctl-canvas-subaccounts-artifacts"
+        S3_ARTIFACT_REGION: "eu-west-1"
+
+jobs:
+  - name: canvas-subaccount_runCI
+    type: runCI
+    flags:
+      - canvas-subaccount
+    steps:
+      - IN: canvas-subaccount-s3-artifacts
+      - OUT: canvas-subaccount-artifact
+
+  - name: canvas-subaccount-cleanup
+    type: runSh
+    steps:
+      - IN: canvas-subaccount-s3-artifacts
+      - IN: canvas-subaccount-aws
+      - IN: canvas-subaccount_runCI
+      - TASK:
+          name: Delete old versions from S3 bucket
+          script:
+            - aws s3 ls s3://${S3_ARTIFACT_BUCKET}/ --region "${S3_ARTIFACT_REGION}" | sort -rn | awk -v s3_url="s3://${S3_ARTIFACT_BUCKET}/" '$4 ~ /build/ {print s3_url $4;}' | tee  /dev/stderr | tail -n +21 | xargs -r -n 1 aws s3 rm
+
+  - name: canvas-subaccount-deploy-dev
+    type: runSh
+    steps:
+      - IN: canvas-subaccount-artifact
+      - IN: canvas-subaccount-aws
+      - IN: canvas-subaccount-s3-artifacts
+      - TASK:
+          name: Unpack build artifact onto public S3 bucket
+          script:
+            - aws s3 cp s3://${S3_ARTIFACT_BUCKET}/build-${CANVASSUBACCOUNTSARTIFACT_VERSIONNAME}.tgz $SHIPPABLE_BUILD_DIR/build.tgz
+            - mkdir $SHIPPABLE_BUILD_DIR/files
+            - tar -zxvf $SHIPPABLE_BUILD_DIR/build.tgz -C $SHIPPABLE_BUILD_DIR/files
+            # This is so that if the upload was done after a newer build was completed we still upload all the files.
+            - aws s3 cp $SHIPPABLE_BUILD_DIR/files "s3://oxctl-canvas-subaccount-dev/" --region "${S3_ARTIFACT_REGION}" --recursive --no-progress
+            # This removes the old files.
+            - aws s3 sync $SHIPPABLE_BUILD_DIR/files "s3://oxctl-canvas-subaccount-dev/" --region "${S3_ARTIFACT_REGION}" --delete --no-progress
+
+  - name: canvas-subaccount-deploy-prod
+    type: runSh
+    steps:
+      - IN: canvas-subaccount-artifact
+        switch: off
+      - IN: canvas-subaccount-aws
+        switch: off
+      - IN: canvas-subaccount-s3-artifacts
+        switch: off
+      - TASK:
+          name: Unpack build artifact onto public S3 bucket
+          script:
+            - aws s3 cp s3://${S3_ARTIFACT_BUCKET}/build-${CANVASSUBACCOUNTSARTIFACT_VERSIONNAME}.tgz $SHIPPABLE_BUILD_DIR/build.tgz
+            - mkdir $SHIPPABLE_BUILD_DIR/files
+            - tar -zxvf $SHIPPABLE_BUILD_DIR/build.tgz -C $SHIPPABLE_BUILD_DIR/files
+            # This is so that if the upload was done after a newer build was completed we still upload all the files.
+            - aws s3 cp $SHIPPABLE_BUILD_DIR/files "s3://oxctl-canvas-subaccount-prod/" --region "${S3_ARTIFACT_REGION}" --recursive --no-progress
+            # This removes the old files.
+            - aws s3 sync $SHIPPABLE_BUILD_DIR/files "s3://oxctl-canvas-subaccount-prod/" --region "${S3_ARTIFACT_REGION}" --delete --no-progress
+
