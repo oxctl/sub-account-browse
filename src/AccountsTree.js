@@ -17,7 +17,7 @@ class AccountsTree extends React.Component {
     token: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     canvasUrl: PropTypes.string.isRequired,
-    accountId: PropTypes.number.isRequired,
+    accountId: PropTypes.string.isRequired,
     accountName: PropTypes.string.isRequired,
     handle403: PropTypes.func.isRequired,
     handleError: PropTypes.func.isRequired
