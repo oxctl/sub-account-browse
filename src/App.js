@@ -128,14 +128,17 @@ class App extends React.Component {
       <AccountsTree token={this.state.token} url={this.state.proxyUrl} accountId={this.state.accountId}
                     accountName={this.state.accountName} canvasUrl={this.state.canvasUrl}
                     handle403={this.handle403}
-                    handleError={(reason) => this.setState({ error: reason.message })}
+                    handleError={this.handleError}
       />
     </LaunchOAuth>
   }
 
+  handleError = (reason) => {
+    this.setState({ error: reason.message })
+  }
+
   handle403 = () => {
     this.setState({ needsToken: true })
-    return Promise.reject('403')
   }
 }
 

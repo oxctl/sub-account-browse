@@ -7,7 +7,8 @@ import { Button } from '@instructure/ui-buttons'
 import ListAccounts from './ListAccounts'
 
 
-const PER_PAGE = 5
+const PER_PAGE = 100
+
 /**
  * Simple component to display all the sub-account from where we are.
  */
@@ -38,75 +39,82 @@ class AccountsTree extends React.Component {
     this.setState({ collections: root })
 
     if (this.state.tryLoading) {
-      this.loadAccounts(this.props.accountId)
+      this.loadAccounts(this.props.accountId).catch(this.handleError)
     }
   }
 
-  async loadAll(accountId) {
+  async loadAccountsRecursive(accountId) {
     this.setState({
       loadAll: true,
       loadingAll: true
     })
-    let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page='+ PER_PAGE+ '&recursive=true'
-    const data = []
-    do {
-      const response = await fetch(url, {
-        headers: new Headers({
-          'Authorization': 'Bearer ' + this.props.token
-        })
-      })
-      url = null
-      if (response.ok) {
-        const json = await response.json()
-        data.push(...json)
-        const links = parseLinkHeader(response.headers.get('Link'))
-        if (links && links.next)
-          url = links.next.url
-      }
-    } while (url)
+    let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=' + PER_PAGE + '&recursive=true'
+    const data = await this.loadAll(url)
     const collections = this.updateCollections(data)
     /* eslint-disable no-param-reassign */
-    const open = Object.values(collections).filter(account => account.collections).reduce((open,account) => {open[account.id] = true; return open}, {})
+    const open = Object.values(collections).filter(account => account.collections).reduce((open, account) => {
+      open[account.id] = true
+      return open
+    }, {})
     this.setState({
       collections: collections,
       open: open,
       loadingAll: false
     })
-
   }
 
-  loadAccounts(accountId) {
-    // TODO, need to handle proper paging
-    return fetch(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page='+ PER_PAGE, {
+  loadAll = async (startUrl) => {
+    const data = []
+    let url = startUrl
+    do {
+      const response = await this.fetchWithAuth(url).then(this.handleError)
+      url = null
+      const json = await response.json()
+      data.push(...json)
+      const links = parseLinkHeader(response.headers.get('Link'))
+      if (links && links.next)
+        url = links.next.url
+    } while (url)
+    return data
+  }
+
+  fetchWithAuth = (url) => {
+    return fetch(url, {
       headers: new Headers({
         'Authorization': 'Bearer ' + this.props.token
       })
-    }).then(response => {
-      if (!response.ok) {
-        if (response.status === 403) {
-          return this.props.handle403()
-        } else if (response.status === 401) {
-          const authHeader = response.headers.get('WWW-Authenticate')
-          if (authHeader && !authHeader.includes('proxy')) {
-            return this.props.handle403()
-          } else {
-            throw new Error('You don\'t have permission to see the list of accounts. Or your session has expired, please try relaunching the tool')
-          }
-        } else {
-          throw new Error('Bad response: ' + response.status)
-        }
-      }
-      return response
-    }).then(response => response.json()
-    ).then(json => {
-      this.setState({
-        collections: this.updateCollections(json, [accountId])
-      })
-    }).catch(reason => {
-      this.props.handleError(reason)
-    }).finally(() => {
-      this.setState({ tryLoading: false })
     })
+  }
+
+  async loadAccounts(accountId) {
+    return this.loadAll(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=' + PER_PAGE)
+      .then(json => {
+        this.setState({
+          collections: this.updateCollections(json, [accountId])
+        })
+      })
+      .finally(() => {
+        this.setState({ tryLoading: false })
+      })
+  }
+
+  handleError = (response) => {
+    if (!response.ok) {
+      if (response.status === 403) {
+        this.props.handle403()
+      } else if (response.status === 401) {
+        const authHeader = response.headers.get('WWW-Authenticate')
+        if (authHeader && !authHeader.includes('proxy')) {
+          this.props.handle403()
+        } else {
+          this.props.handleError('You don\'t have permission to see the list of accounts. Or your session has expired, please try relaunching the tool')
+        }
+      } else {
+        this.props.handleError('Bad response: ' + response.status)
+      }
+      return Promise.reject('Bad response: ' + response.status)
+    }
+    return response
   }
 
   updateCollections(json, loadedAccounts) {
@@ -147,19 +155,19 @@ class AccountsTree extends React.Component {
   renderData() {
     const collections = this.state.collections
     return <React.Fragment>
-      <Button onClick={() => this.loadAll(this.props.accountId)}
+      <Button onClick={() => this.loadAccountsRecursive(this.props.accountId)}
               interaction={this.state.loadAll ? 'disabled' : 'enabled'}>Expand All</Button>
       {/*{this.renderList(collections, this.props.accountId)}*/}
-      <ListAccounts id={this.props.accountId} collections={collections} open={this.state.open} handleIconClick={this.handleIconClick}/>
+      <ListAccounts id={this.props.accountId} collections={collections} open={this.state.open}
+                    handleIconClick={this.handleIconClick}/>
     </React.Fragment>
 
   }
 
-
   handleIconClick = (id) => {
     this.toggle(id)
     if (!this.state.collections[id].collections) {
-      this.loadAccounts(id)
+      this.loadAccounts(id).catch(this.props.handleError)
     }
   }
 
@@ -171,8 +179,8 @@ class AccountsTree extends React.Component {
     this.setState((state) => {
       const update = {}
       update[id] = !state.open[id]
-      return { open: { ...state.open, ...update }  }
-      })
+      return { open: { ...state.open, ...update } }
+    })
   }
 
 }
