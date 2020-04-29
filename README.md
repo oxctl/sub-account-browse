@@ -16,6 +16,11 @@ This works because our webpack config checks for `localhost.pem` and `localhost-
 
 This tool needs to have a developer key setup for it with permission to view account sub accounts. 
 
+    canvas_account_id=${Canvas.account.id}
+    canvas_account_name=${Canvas.account.name}
+    canvas_api_base_url=$Canvas.api.baseUrl
+    com_instructure_brand_config_json_url=$com.instructure.brandConfigJSON.url
+
 
 ## Deployment
 
