@@ -7,6 +7,7 @@ import { Button } from '@instructure/ui-buttons'
 import ListAccounts from './ListAccounts'
 
 
+const PER_PAGE = 5
 /**
  * Simple component to display all the sub-account from where we are.
  */
@@ -46,7 +47,7 @@ class AccountsTree extends React.Component {
       loadAll: true,
       loadingAll: true
     })
-    let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=100&recursive=true'
+    let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page='+ PER_PAGE+ '&recursive=true'
     const data = []
     do {
       const response = await fetch(url, {
@@ -76,7 +77,7 @@ class AccountsTree extends React.Component {
 
   loadAccounts(accountId) {
     // TODO, need to handle proper paging
-    return fetch(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=100', {
+    return fetch(this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page='+ PER_PAGE, {
       headers: new Headers({
         'Authorization': 'Bearer ' + this.props.token
       })
