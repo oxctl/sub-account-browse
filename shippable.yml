@@ -57,10 +57,10 @@ resources:
         S3_ARTIFACT_REGION: "eu-west-1"
 
 jobs:
-  - name: canvas-subaccount_runCI
+  - name: canvas-subaccounts_runCI
     type: runCI
     flags:
-      - canvas-subaccount
+      - canvas-subaccounts
     steps:
       - IN: canvas-subaccounts-s3-artifacts
       - OUT: canvas-subaccounts-artifact
