@@ -44,7 +44,7 @@ resources:
     versionTemplate:
       params:
         versionName: "latest"
-  - name: canvas-subaccount-aws
+  - name: canvas-subaccounts-aws
     type: cliConfig
     integration: AWS
     pointer:
@@ -62,26 +62,26 @@ jobs:
     flags:
       - canvas-subaccount
     steps:
-      - IN: canvas-subaccount-s3-artifacts
-      - OUT: canvas-subaccount-artifact
+      - IN: canvas-subaccounts-s3-artifacts
+      - OUT: canvas-subaccounts-artifact
 
-  - name: canvas-subaccount-cleanup
+  - name: canvas-subaccounts-cleanup
     type: runSh
     steps:
-      - IN: canvas-subaccount-s3-artifacts
-      - IN: canvas-subaccount-aws
+      - IN: canvas-subaccounts-s3-artifacts
+      - IN: canvas-subaccounts-aws
       - IN: canvas-subaccount_runCI
       - TASK:
           name: Delete old versions from S3 bucket
           script:
             - aws s3 ls s3://${S3_ARTIFACT_BUCKET}/ --region "${S3_ARTIFACT_REGION}" | sort -rn | awk -v s3_url="s3://${S3_ARTIFACT_BUCKET}/" '$4 ~ /build/ {print s3_url $4;}' | tee  /dev/stderr | tail -n +21 | xargs -r -n 1 aws s3 rm
 
-  - name: canvas-subaccount-deploy-dev
+  - name: canvas-subaccounts--deploy-dev
     type: runSh
     steps:
-      - IN: canvas-subaccount-artifact
-      - IN: canvas-subaccount-aws
-      - IN: canvas-subaccount-s3-artifacts
+      - IN: canvas-subaccounts--artifact
+      - IN: canvas-subaccounts--aws
+      - IN: canvas-subaccounts--s3-artifacts
       - TASK:
           name: Unpack build artifact onto public S3 bucket
           script:
@@ -93,14 +93,14 @@ jobs:
             # This removes the old files.
             - aws s3 sync $SHIPPABLE_BUILD_DIR/files "s3://oxctl-canvas-subaccounts-dev/" --region "${S3_ARTIFACT_REGION}" --delete --no-progress
 
-  - name: canvas-subaccount-deploy-prod
+  - name: canvas-subaccounts-deploy-prod
     type: runSh
     steps:
-      - IN: canvas-subaccount-artifact
+      - IN: canvas-subaccounts-artifact
         switch: off
-      - IN: canvas-subaccount-aws
+      - IN: canvas-subaccounts-aws
         switch: off
-      - IN: canvas-subaccount-s3-artifacts
+      - IN: canvas-subaccounts-s3-artifacts
         switch: off
       - TASK:
           name: Unpack build artifact onto public S3 bucket
