@@ -76,12 +76,12 @@ jobs:
           script:
             - aws s3 ls s3://${S3_ARTIFACT_BUCKET}/ --region "${S3_ARTIFACT_REGION}" | sort -rn | awk -v s3_url="s3://${S3_ARTIFACT_BUCKET}/" '$4 ~ /build/ {print s3_url $4;}' | tee  /dev/stderr | tail -n +21 | xargs -r -n 1 aws s3 rm
 
-  - name: canvas-subaccounts--deploy-dev
+  - name: canvas-subaccounts-deploy-dev
     type: runSh
     steps:
-      - IN: canvas-subaccounts--artifact
-      - IN: canvas-subaccounts--aws
-      - IN: canvas-subaccounts--s3-artifacts
+      - IN: canvas-subaccounts-artifact
+      - IN: canvas-subaccounts-aws
+      - IN: canvas-subaccounts-s3-artifacts
       - TASK:
           name: Unpack build artifact onto public S3 bucket
           script:
