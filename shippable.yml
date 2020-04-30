@@ -70,7 +70,7 @@ jobs:
     steps:
       - IN: canvas-subaccounts-s3-artifacts
       - IN: canvas-subaccounts-aws
-      - IN: canvas-subaccount_runCI
+      - IN: canvas-subaccounts_runCI
       - TASK:
           name: Delete old versions from S3 bucket
           script:
