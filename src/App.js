@@ -111,7 +111,7 @@ class App extends React.Component {
     this.jwt = jwtDecode(token)
     this.setState({
       comInstructureBrandConfigJsonUrl: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].com_instructure_brand_config_json_url,
-      accountId: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_id,
+      accountId: parseInt(this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_id),
       accountName: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_name,
       canvasUrl: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_api_base_url,
       proxyUrl: servers.proxyServer,
@@ -146,7 +146,9 @@ class App extends React.Component {
   }
 
   handleError = (reason) => {
-    this.setState({ error: reason.message })
+    if (reason) {
+      this.setState({ error: (reason.message) ? reason.message : reason })
+    }
   }
 
   handle403 = () => {

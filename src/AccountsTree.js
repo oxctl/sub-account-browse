@@ -8,8 +8,7 @@ import { TextInput } from '@instructure/ui-text-input'
 import ListAccounts from './ListAccounts'
 import { View } from '@instructure/ui-view'
 import { ScreenReaderContent } from '@instructure/ui-a11y-content'
-import LaunchOAuth from './LaunchOAuth'
-import { Flex } from '@instructure/ui-flex'
+import { Spinner } from '@instructure/ui-spinner'
 
 
 const PER_PAGE = 100
@@ -23,7 +22,7 @@ class AccountsTree extends React.Component {
     token: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     canvasUrl: PropTypes.string.isRequired,
-    accountId: PropTypes.string.isRequired,
+    accountId: PropTypes.number.isRequired,
     accountName: PropTypes.string.isRequired,
     handle403: PropTypes.func.isRequired,
     handleError: PropTypes.func.isRequired
@@ -42,7 +41,6 @@ class AccountsTree extends React.Component {
 
 
   componentDidMount() {
-
     const root = {}
     root[this.props.accountId] = { id: this.props.accountId, name: this.props.accountName }
     this.setState({ collections: root })
@@ -126,7 +124,7 @@ class AccountsTree extends React.Component {
       } else {
         this.props.handleError('Bad response: ' + response.status)
       }
-      return Promise.reject('Bad response: ' + response.status)
+      return Promise.reject()
     }
     return response
   }
@@ -164,19 +162,36 @@ class AccountsTree extends React.Component {
   }
 
   handleSearch = (e) => {
+    this.loadAndSearch().catch(this.props.handleError)
+    e.preventDefault()
+  }
+
+  loadAndSearch = async () => {
+    this.setState({ searchMessages: []})
+    if (!this.state.loadAll) {
+      await this.loadAccountsRecursive(this.props.accountId)
+    }
     const collections = this.state.collections
     const accountId = this.props.accountId
     let search = this.state.search.toLowerCase()
     const result = this.search(search, accountId)
-    console.log(search)
-
-    console.log(result)
-    e.preventDefault()
+    if (result) {
+      const toOpen = result.reduce((open, id) => {
+        open[id] = true
+        return open
+      }, {})
+      this.setState({ open: { ...this.state.open, ...toOpen } })
+    } else {
+      this.setState({ searchMessages: [{type: "error", text: "No matches"}]})
+    }
   }
 
   search = (search, accountId) => {
     const collections = this.state.collections
     const children = collections[accountId].collections
+    if (collections[accountId].name.toLowerCase().includes(search)) {
+      return []
+    }
     if (children) {
       for (let i = 0; i < children.length; i++) {
         const result = this.search(search, children[i])
@@ -185,15 +200,8 @@ class AccountsTree extends React.Component {
           return result
         }
       }
-    } else {
-      if (collections[accountId].name.toLowerCase().includes(search)) {
-        return [accountId]
-      }
     }
   }
-
-  // collections[accountId].collections.forEach(childId => collections[childId].name.includes("MSD") && console.log(childId))
-
 
   render() {
     return (<React.Fragment>
@@ -208,15 +216,16 @@ class AccountsTree extends React.Component {
       <View as="div" position="sticky" insetBlockStart="0" textAlign="end">
         <form style={{ display: 'inline' }} onSubmit={this.handleSearch}>
           <TextInput
+            messages={this.state.searchMessages} width="15rem"
+            renderAfterInput={this.state.loadingAll ?
+              <Spinner size="x-small" renderTitle="Loading sub-accounts"/> : null}
             renderLabel={<ScreenReaderContent>Search sub-accounts</ScreenReaderContent>}
             value={this.state.search} onChange={this.handleSearchChange} display="inline-block"
-            placeholder="Search sub-accounts" padding="small"/>
-          <Button display="inline-block" type="submit" margin="small">Find</Button>
+            placeholder="Search sub-accounts"/>
+          <Button display="inline-block" type="submit" margin="small"
+                  interaction={this.state.loadingAll ? 'disabled' : 'enabled'}>Find</Button>
         </form>
       </View>
-      <Button onClick={() => this.loadAccountsRecursive(this.props.accountId)}
-              interaction={this.state.loadAll ? 'disabled' : 'enabled'}>Expand All</Button>
-      {/*{this.renderList(collections, this.props.accountId)}*/}
       <ListAccounts id={this.props.accountId} collections={collections} canvasUrl={this.props.canvasUrl}
                     open={this.state.open} handleIconClick={this.handleIconClick}/>
     </React.Fragment>
