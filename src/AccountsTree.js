@@ -158,7 +158,7 @@ class AccountsTree extends React.Component {
       <Button onClick={() => this.loadAccountsRecursive(this.props.accountId)}
               interaction={this.state.loadAll ? 'disabled' : 'enabled'}>Expand All</Button>
       {/*{this.renderList(collections, this.props.accountId)}*/}
-      <ListAccounts id={this.props.accountId} collections={collections} open={this.state.open}
+      <ListAccounts canvasUrl={this.props.canvasUrl} id={this.props.accountId} collections={collections} open={this.state.open}
                     handleIconClick={this.handleIconClick}/>
     </React.Fragment>
 
