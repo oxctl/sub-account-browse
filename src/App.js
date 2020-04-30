@@ -32,12 +32,15 @@ import AccountsTree from './AccountsTree'
 import { View } from '@instructure/ui-view'
 import { Loading } from './Loading'
 import Error from './Error/Error'
+import console from '@instructure/console'
 
 
 const settings = {
   'https://localhost:3000': {
-    'ltiServer': 'https://localhost:28443',
-    'proxyServer': 'https://localhost:18443'
+    // 'ltiServer': 'https://localhost:28443',
+    'ltiServer': 'https://lti.canvas.ox.ac.uk',
+    // 'proxyServer': 'https://localhost:18443'
+    'proxyServer': 'https://proxy.canvas.ox.ac.uk'
   },
   'https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com': {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
@@ -118,9 +121,10 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(process.env.NODE_ENV)
     return (
       <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl}>
-        <View padding="small">
+        <View padding="small" as="div">
           <Error message={this.state.error}>
             {(this.state.loading) ? <Loading/> : this.renderContent()}
           </Error>
