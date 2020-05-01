@@ -6,14 +6,8 @@ import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 
 class Account extends React.Component {
 
-  constructor(props) {
-    super();
-    // Save our ref
-    // this.props.accountRefs[this.props.account.id] = this.ref
-  }
-
   saveRef = (ref) => {
-    this.ref = ref
+    this.props.accountRef(this.props.account.id, ref)
   }
 
   render() {

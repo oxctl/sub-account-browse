@@ -39,6 +39,8 @@ class AccountsTree extends React.Component {
     collections: null
   }
 
+  // Mapping from account ID to React ref
+  accountRefs = []
 
   componentDidMount() {
     const root = {}
@@ -55,7 +57,7 @@ class AccountsTree extends React.Component {
     messages: null
   })
 
-  async loadAccountsRecursive(accountId) {
+  async loadAccountsRecursive(accountId, openAll = false) {
     this.setState({
       loadAll: true,
       loadingAll: true
@@ -63,11 +65,14 @@ class AccountsTree extends React.Component {
     let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=' + PER_PAGE + '&recursive=true'
     const data = await this.loadAll(url)
     const collections = this.updateCollections(data)
-    /* eslint-disable no-param-reassign */
-    // const open = Object.values(collections).filter(account => account.collections).reduce((open, account) => {
-    //   open[account.id] = true
-    //   return open
-    // }, {})
+    if(openAll) {
+      // This has performance issues on a large tree
+      /* eslint-disable no-param-reassign */
+      const open = Object.values(collections).filter(account => account.collections).reduce((open, account) => {
+        open[account.id] = true
+        return open
+      }, {})
+    }
     this.setState({
       collections: collections,
       // open: open,
@@ -186,6 +191,9 @@ class AccountsTree extends React.Component {
       this.setState({
         open: { ...this.state.open, ...toOpen },
         from: match
+      }, () => {
+        // Have to do this after we have expanded the nodes.
+        this.accountRefs[match].scrollIntoView({behavior: 'smooth'})
       })
     } else {
       if(from) {
@@ -197,6 +205,10 @@ class AccountsTree extends React.Component {
         this.setState({ searchMessages: [{ type: "error", text: "No matches" }] })
       }
     }
+  }
+
+  accountRef = (accountId, ref) => {
+    this.accountRefs[accountId] = ref
   }
 
   /**
@@ -256,9 +268,8 @@ class AccountsTree extends React.Component {
         </form>
       </View>
       <ListAccounts id={this.props.accountId} collections={collections} canvasUrl={this.props.canvasUrl}
-                    open={this.state.open} handleIconClick={this.handleIconClick}/>
+                    open={this.state.open} handleIconClick={this.handleIconClick} accountRef={this.accountRef}/>
     </React.Fragment>
-
   }
 
   handleIconClick = (id) => {

@@ -30,7 +30,12 @@ class ListAccounts extends React.PureComponent {
       return children.map(child => {
         const account = this.props.collections[child]
         return <List.Item key={account.id}>
-          <Account canvasUrl={this.props.canvasUrl} account={account} isOpen={this.isOpen(account.id)} handleIconClick={this.props.handleIconClick}/>
+          <Account
+          canvasUrl={this.props.canvasUrl}
+          account={account}
+          isOpen={this.isOpen(account.id)}
+          handleIconClick={this.props.handleIconClick}
+          accountRef={this.props.accountRef}/>
           {(this.isOpen(account.id)) ? this.renderList(account.id) : null}
         </List.Item>
       })
