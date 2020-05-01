@@ -10,7 +10,6 @@ import { View } from '@instructure/ui-view'
 import { ScreenReaderContent } from '@instructure/ui-a11y-content'
 import { Spinner } from '@instructure/ui-spinner'
 
-
 const PER_PAGE = 100
 
 /**
@@ -54,7 +53,8 @@ class AccountsTree extends React.Component {
 
   handleSearchChange = (e, value) => this.setState({
     search: value,
-    messages: null
+    messages: null,
+    from: null
   })
 
   async loadAccountsRecursive(accountId, openAll = false) {
@@ -182,7 +182,6 @@ class AccountsTree extends React.Component {
     const from = this.state.from
     const result = this.search(search, accountId, from)
     if (result && result.length > 0) {
-      console.log(result)
       const match = result.shift()
       const toOpen = result.reduce((open, id) => {
         open[id] = true
@@ -193,7 +192,10 @@ class AccountsTree extends React.Component {
         from: match
       }, () => {
         // Have to do this after we have expanded the nodes.
-        this.accountRefs[match].scrollIntoView({behavior: 'smooth'})
+        const accountElement = this.accountRefs[match]
+        if (accountElement) {
+          accountElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
       })
     } else {
       if(from) {
@@ -268,7 +270,9 @@ class AccountsTree extends React.Component {
         </form>
       </View>
       <ListAccounts id={this.props.accountId} collections={collections} canvasUrl={this.props.canvasUrl}
-                    open={this.state.open} handleIconClick={this.handleIconClick} accountRef={this.accountRef}/>
+                    open={this.state.open} handleIconClick={this.handleIconClick} accountRef={this.accountRef}
+                    focused={this.state.from}
+      />
     </React.Fragment>
   }
 

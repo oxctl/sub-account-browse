@@ -3,20 +3,22 @@ import { Link } from '@instructure/ui-link'
 import { Text } from '@instructure/ui-text'
 import { IconButton } from '@instructure/ui-buttons'
 import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
+import { View } from '@instructure/ui-view'
 
 class Account extends React.Component {
 
-  saveRef = (ref) => {
-    this.props.accountRef(this.props.account.id, ref)
-  }
-
   render() {
     const account = this.props.account
-    return <React.Fragment>
+    return (<React.Fragment>
       {this.renderIcon(account)}
-      <Link elementRef={this.saveRef} href={this.props.canvasUrl + '/accounts/' + account.id} target="_top">{account.name}</Link>
-      {(account.sis_id) ? <Text size="small" color="secondary">({account.sis_id})</Text> : null}
-    </React.Fragment>
+      <View position="relative" background={this.props.account.id === this.props.focused ? 'secondary':null}>
+        <Link href={this.props.canvasUrl + '/accounts/' + account.id} target="_top">
+          {account.name}
+        </Link>
+      </View>
+      {(this.props.includeSisId && account.sis_id) ?
+        <Text size="small" color="secondary">({account.sis_id})</Text> : null}
+    </React.Fragment>)
   }
 
   renderIcon(account) {
