@@ -194,7 +194,7 @@ class AccountsTree extends React.Component {
         // Have to do this after we have expanded the nodes.
         const accountElement = this.accountRefs[match]
         if (accountElement) {
-          accountElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          accountElement.scrollIntoView({ behavior: 'smooth', block: 'center'})
         }
       })
     } else {
@@ -275,6 +275,7 @@ class AccountsTree extends React.Component {
       />
     </React.Fragment>
   }
+
 
   handleIconClick = (id) => {
     this.toggle(id)
