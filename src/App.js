@@ -32,12 +32,15 @@ import AccountsTree from './AccountsTree'
 import { View } from '@instructure/ui-view'
 import { Loading } from './Loading'
 import Error from './Error/Error'
+import console from '@instructure/console'
 
 
 const settings = {
   'https://localhost:3000': {
-    'ltiServer': 'https://localhost:28443',
-    'proxyServer': 'https://localhost:18443'
+    // 'ltiServer': 'https://localhost:28443',
+    'ltiServer': 'https://lti.canvas.ox.ac.uk',
+    // 'proxyServer': 'https://localhost:18443'
+    'proxyServer': 'https://proxy.canvas.ox.ac.uk'
   },
   'https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com': {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
@@ -108,7 +111,7 @@ class App extends React.Component {
     this.jwt = jwtDecode(token)
     this.setState({
       comInstructureBrandConfigJsonUrl: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].com_instructure_brand_config_json_url,
-      accountId: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_id,
+      accountId: parseInt(this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_id),
       accountName: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_name,
       canvasUrl: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_api_base_url,
       proxyUrl: servers.proxyServer,
@@ -118,9 +121,10 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(process.env.NODE_ENV)
     return (
       <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl}>
-        <View padding="small">
+        <View padding="small" as="div">
           <Error message={this.state.error}>
             {(this.state.loading) ? <Loading/> : this.renderContent()}
           </Error>
@@ -142,7 +146,9 @@ class App extends React.Component {
   }
 
   handleError = (reason) => {
-    this.setState({ error: reason.message })
+    if (reason) {
+      this.setState({ error: (reason.message) ? reason.message : reason })
+    }
   }
 
   handle403 = () => {

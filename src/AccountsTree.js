@@ -4,8 +4,11 @@ import parseLinkHeader from 'parse-link-header'
 
 import { Loading } from './Loading'
 import { Button } from '@instructure/ui-buttons'
+import { TextInput } from '@instructure/ui-text-input'
 import ListAccounts from './ListAccounts'
-
+import { View } from '@instructure/ui-view'
+import { ScreenReaderContent } from '@instructure/ui-a11y-content'
+import { Spinner } from '@instructure/ui-spinner'
 
 const PER_PAGE = 100
 
@@ -18,7 +21,7 @@ class AccountsTree extends React.Component {
     token: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     canvasUrl: PropTypes.string.isRequired,
-    accountId: PropTypes.string.isRequired,
+    accountId: PropTypes.number.isRequired,
     accountName: PropTypes.string.isRequired,
     handle403: PropTypes.func.isRequired,
     handleError: PropTypes.func.isRequired
@@ -26,14 +29,19 @@ class AccountsTree extends React.Component {
 
   state = {
     accounts: null,
+    search: '',
+    searchPosition: 0,
     open: {},
     tryLoading: true,
     loadAll: false,
-    loadingAll: false
+    loadingAll: false,
+    collections: null
   }
 
-  componentDidMount() {
+  // Mapping from account ID to React ref
+  accountRefs = []
 
+  componentDidMount() {
     const root = {}
     root[this.props.accountId] = { id: this.props.accountId, name: this.props.accountName }
     this.setState({ collections: root })
@@ -43,7 +51,13 @@ class AccountsTree extends React.Component {
     }
   }
 
-  async loadAccountsRecursive(accountId) {
+  handleSearchChange = (e, value) => this.setState({
+    search: value,
+    messages: null,
+    from: null
+  })
+
+  async loadAccountsRecursive(accountId, openAll = false) {
     this.setState({
       loadAll: true,
       loadingAll: true
@@ -51,14 +65,17 @@ class AccountsTree extends React.Component {
     let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=' + PER_PAGE + '&recursive=true'
     const data = await this.loadAll(url)
     const collections = this.updateCollections(data)
-    /* eslint-disable no-param-reassign */
-    const open = Object.values(collections).filter(account => account.collections).reduce((open, account) => {
-      open[account.id] = true
-      return open
-    }, {})
+    if(openAll) {
+      // This has performance issues on a large tree
+      /* eslint-disable no-param-reassign */
+      const open = Object.values(collections).filter(account => account.collections).reduce((open, account) => {
+        open[account.id] = true
+        return open
+      }, {})
+    }
     this.setState({
       collections: collections,
-      open: open,
+      // open: open,
       loadingAll: false
     })
   }
@@ -112,11 +129,15 @@ class AccountsTree extends React.Component {
       } else {
         this.props.handleError('Bad response: ' + response.status)
       }
-      return Promise.reject('Bad response: ' + response.status)
+      return Promise.reject()
     }
     return response
   }
 
+  /**
+   * @param {[]} json The new data to load.
+   * @param {*[]} loadedAccounts The account IDs that have been loaded and so we will have results for.
+   */
   updateCollections(json, loadedAccounts) {
     /* eslint-disable no-param-reassign */
     var collections = json
@@ -145,6 +166,85 @@ class AccountsTree extends React.Component {
     return collections
   }
 
+  handleSearch = (e) => {
+    this.loadAndSearch().catch(this.props.handleError)
+    e.preventDefault()
+  }
+
+  loadAndSearch = async () => {
+    this.setState({ searchMessages: []})
+    if (!this.state.loadAll) {
+      await this.loadAccountsRecursive(this.props.accountId)
+    }
+    const collections = this.state.collections
+    const accountId = this.props.accountId
+    const search = this.state.search.toLowerCase()
+    const from = this.state.from
+    const result = this.search(search, accountId, from)
+    if (result && result.length > 0) {
+      const match = result.shift()
+      const toOpen = result.reduce((open, id) => {
+        open[id] = true
+        return open
+      }, {})
+      this.setState({
+        open: { ...this.state.open, ...toOpen },
+        from: match
+      }, () => {
+        // Have to do this after we have expanded the nodes.
+        const accountElement = this.accountRefs[match]
+        if (accountElement) {
+          accountElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      })
+    } else {
+      if(from) {
+        this.setState({
+          searchMessages: [{ type: "error", text: "No more matches" }],
+          from: null
+        })
+      } else {
+        this.setState({ searchMessages: [{ type: "error", text: "No matches" }] })
+      }
+    }
+  }
+
+  accountRef = (accountId, ref) => {
+    this.accountRefs[accountId] = ref
+  }
+
+  /**
+   * We return null to indicate we haven't found anything.
+   * An empty array to indicate that the location we were searching from previously has been found
+   * A non empty array when we matched
+   */
+  search = (search, accountId, from) => {
+    const collections = this.state.collections
+    const children = collections[accountId].collections
+    let foundFrom = false
+    if (!from & collections[accountId].name.toLowerCase().includes(search)) {
+      return [accountId]
+    }
+    if (accountId === from) {
+      from = null
+      foundFrom = true
+    }
+    if (children) {
+      for (let i = 0; i < children.length; i++) {
+        const result = this.search(search, children[i], from)
+        if (result) {
+          if (result.length === 0) {
+            from = null
+            foundFrom = true
+          } else {
+            result.push(accountId)
+            return result
+          }
+        }
+      }
+    }
+    return foundFrom?[]:null
+  }
 
   render() {
     return (<React.Fragment>
@@ -154,14 +254,26 @@ class AccountsTree extends React.Component {
 
   renderData() {
     const collections = this.state.collections
+    // Attempting to do this with flexbox resulted in the stick positioning not working
     return <React.Fragment>
-      <Button onClick={() => this.loadAccountsRecursive(this.props.accountId)}
-              interaction={this.state.loadAll ? 'disabled' : 'enabled'}>Expand All</Button>
-      {/*{this.renderList(collections, this.props.accountId)}*/}
-      <ListAccounts canvasUrl={this.props.canvasUrl} id={this.props.accountId} collections={collections} open={this.state.open}
-                    handleIconClick={this.handleIconClick}/>
+      <View as="div" position="sticky" insetBlockStart="0" textAlign="end">
+        <form style={{ display: 'inline' }} onSubmit={this.handleSearch}>
+          <TextInput
+            messages={this.state.searchMessages} width="15rem"
+            renderAfterInput={this.state.loadingAll ?
+              <Spinner size="x-small" renderTitle="Loading sub-accounts"/> : null}
+            renderLabel={<ScreenReaderContent>Search sub-accounts</ScreenReaderContent>}
+            value={this.state.search} onChange={this.handleSearchChange} display="inline-block"
+            placeholder="Search sub-accounts"/>
+          <Button display="inline-block" type="submit" margin="small"
+                  interaction={this.state.loadingAll ? 'disabled' : 'enabled'}>Find</Button>
+        </form>
+      </View>
+      <ListAccounts id={this.props.accountId} collections={collections} canvasUrl={this.props.canvasUrl}
+                    open={this.state.open} handleIconClick={this.handleIconClick} accountRef={this.accountRef}
+                    focused={this.state.from}
+      />
     </React.Fragment>
-
   }
 
   handleIconClick = (id) => {
