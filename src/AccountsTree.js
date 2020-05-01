@@ -173,34 +173,63 @@ class AccountsTree extends React.Component {
     }
     const collections = this.state.collections
     const accountId = this.props.accountId
-    let search = this.state.search.toLowerCase()
-    const result = this.search(search, accountId)
-    if (result) {
+    const search = this.state.search.toLowerCase()
+    const from = this.state.from
+    const result = this.search(search, accountId, from)
+    if (result && result.length > 0) {
+      console.log(result)
+      const match = result.shift()
       const toOpen = result.reduce((open, id) => {
         open[id] = true
         return open
       }, {})
-      this.setState({ open: { ...this.state.open, ...toOpen } })
+      this.setState({
+        open: { ...this.state.open, ...toOpen },
+        from: match
+      })
     } else {
-      this.setState({ searchMessages: [{type: "error", text: "No matches"}]})
+      if(from) {
+        this.setState({
+          searchMessages: [{ type: "error", text: "No more matches" }],
+          from: null
+        })
+      } else {
+        this.setState({ searchMessages: [{ type: "error", text: "No matches" }] })
+      }
     }
   }
 
-  search = (search, accountId) => {
+  /**
+   * We return null to indicate we haven't found anything.
+   * An empty array to indicate that the location we were searching from previously has been found
+   * A non empty array when we matched
+   */
+  search = (search, accountId, from) => {
     const collections = this.state.collections
     const children = collections[accountId].collections
-    if (collections[accountId].name.toLowerCase().includes(search)) {
-      return []
+    let foundFrom = false
+    if (!from & collections[accountId].name.toLowerCase().includes(search)) {
+      return [accountId]
+    }
+    if (accountId === from) {
+      from = null
+      foundFrom = true
     }
     if (children) {
       for (let i = 0; i < children.length; i++) {
-        const result = this.search(search, children[i])
+        const result = this.search(search, children[i], from)
         if (result) {
-          result.push(accountId)
-          return result
+          if (result.length === 0) {
+            from = null
+            foundFrom = true
+          } else {
+            result.push(accountId)
+            return result
+          }
         }
       }
     }
+    return foundFrom?[]:null
   }
 
   render() {
