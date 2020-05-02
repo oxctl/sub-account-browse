@@ -31,11 +31,13 @@ class ListAccounts extends React.PureComponent {
         const account = this.props.collections[child]
         return <List.Item key={account.id} elementRef={(ref) => this.props.accountRef(account.id, ref)}>
           <Account
+            url={this.props.url}
+            token={this.props.token}
             focused={this.props.focused}
-          canvasUrl={this.props.canvasUrl}
-          account={account}
-          isOpen={this.isOpen(account.id)}
-          handleIconClick={this.props.handleIconClick}/>
+            canvasUrl={this.props.canvasUrl}
+            account={account}
+            isOpen={this.isOpen(account.id)}
+            handleIconClick={this.props.handleIconClick}/>
           {(this.isOpen(account.id)) ? this.renderList(account.id) : null}
         </List.Item>
       })

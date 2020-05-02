@@ -89,6 +89,7 @@ class AccountsTree extends React.Component {
       const json = await response.json()
       data.push(...json)
       const links = parseLinkHeader(response.headers.get('Link'))
+      console.log(links)
       if (links && links.next)
         url = links.next.url
     } while (url)
@@ -272,6 +273,8 @@ class AccountsTree extends React.Component {
       <ListAccounts id={this.props.accountId} collections={collections} canvasUrl={this.props.canvasUrl}
                     open={this.state.open} handleIconClick={this.handleIconClick} accountRef={this.accountRef}
                     focused={this.state.from}
+                    url={this.props.url}
+                    token={this.props.token}
       />
     </React.Fragment>
   }
