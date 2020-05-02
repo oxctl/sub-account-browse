@@ -48,7 +48,7 @@ class Account extends React.Component {
       return this.state.error
     } else {
       if (this.state.isLoading) {
-        return <Spinner size="x-small"/>
+        return <Spinner size="x-small" renderTitle="Loading courses"/>
       } else if (this.state.isLoaded) {
         if (this.state.courseCount !== null) {
           return this.state.courseCount + ' courses'
