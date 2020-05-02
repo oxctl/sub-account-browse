@@ -9,6 +9,7 @@ import ListAccounts from './ListAccounts'
 import { View } from '@instructure/ui-view'
 import { ScreenReaderContent } from '@instructure/ui-a11y-content'
 import { Spinner } from '@instructure/ui-spinner'
+import * as utils from './utils'
 
 const PER_PAGE = 100
 
@@ -84,7 +85,7 @@ class AccountsTree extends React.Component {
     const data = []
     let url = startUrl
     do {
-      const response = await this.fetchWithAuth(url).then(this.handleError)
+      const response = await utils.fetchWithAuth(url, this.props.token).then(this.handleError)
       url = null
       const json = await response.json()
       data.push(...json)
@@ -94,14 +95,6 @@ class AccountsTree extends React.Component {
         url = links.next.url
     } while (url)
     return data
-  }
-
-  fetchWithAuth = (url) => {
-    return fetch(url, {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + this.props.token
-      })
-    })
   }
 
   async loadAccounts(accountId) {

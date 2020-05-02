@@ -7,6 +7,7 @@ import { View } from '@instructure/ui-view'
 import { Tooltip } from '@instructure/ui-tooltip'
 import { Spinner } from '@instructure/ui-spinner'
 import parseLinkHeader from 'parse-link-header'
+import * as utils from './utils.js'
 
 
 class Account extends React.Component {
@@ -18,25 +19,10 @@ class Account extends React.Component {
     courseCount: null
   }
 
-  rejectFailures = (response) => {
-    if (!response.ok) {
-      return Promise.reject('Response is not ok')
-    }
-    return response
-  }
-
-  fetchWithAuth = (url) => {
-    return fetch(url, {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + this.props.token
-      })
-    })
-  }
-
   loadCourses = async () => {
     this.setState({ isLoading: true })
-    const response = await this.fetchWithAuth(this.props.url + '/api/v1/accounts/' + this.props.account.id + '/courses?per_page=1')
-      .then(this.rejectFailures)
+    const response = await utils.fetchWithAuth(this.props.url + '/api/v1/accounts/' + this.props.account.id + '/courses?per_page=1', this.props.token)
+      .then(utils.rejectFailures)
       .finally(() => this.setState({ isLoading: false }))
     const links = parseLinkHeader(response.headers.get('Link'))
     const items = await response.json().then(json => json.length)
