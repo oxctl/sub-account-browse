@@ -4,8 +4,8 @@ import { Text } from '@instructure/ui-text'
 import { IconButton } from '@instructure/ui-buttons'
 import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 import { View } from '@instructure/ui-view'
-import { IconInfoLine } from '@instructure/ui-icons'
 import { Tooltip } from '@instructure/ui-tooltip'
+import { Spinner } from '@instructure/ui-spinner'
 import parseLinkHeader from 'parse-link-header'
 
 
@@ -62,7 +62,7 @@ class Account extends React.Component {
       return this.state.error
     } else {
       if (this.state.isLoading) {
-        return 'Loading...'
+        return <Spinner size="x-small"/>
       } else if (this.state.isLoaded) {
         if (this.state.courseCount !== null) {
           return this.state.courseCount + ' courses'
