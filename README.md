@@ -21,13 +21,18 @@ This tool needs to have a developer key setup for it with permission to view acc
     canvas_api_base_url=$Canvas.api.baseUrl
     com_instructure_brand_config_json_url=$com.instructure.brandConfigJSON.url
 
-
 ## Deployment
 
-This is currently deployed to the S3 bucket https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com/
-To update the build that is there use the S3 cli:
+This codebase is deployed into AWS S3 buckets by shippable.
 
-    aws s3 sync __build__ s3://oxctl-subaccounts/
+## Notes
+
+### GraphQL
+
+Canvas has a GraphQL endpoint and in theory it would have been very useful for this tool (it supports accounts and courses)
+however it doesn't allow us to find out the count of courses in a sub-account (we would have to load them all). There's
+also no way to load the SIS ID on the account (although we're not using this at the moment.)
+
 
 For easy setup, we've included all of our build presets. This includes
 configurations for webpack, babel, eslint, etc, and allows you to start developing
