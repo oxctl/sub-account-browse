@@ -59,6 +59,7 @@ class Account extends React.Component {
     }
   }
 
+  // We have to use the alert colour as the warning doesn't have a good accessibility value
   render() {
     const account = this.props.account
     return (<React.Fragment>
