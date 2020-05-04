@@ -63,14 +63,16 @@ class Account extends React.Component {
     const account = this.props.account
     return (<React.Fragment>
       {this.renderIcon(account)}
-      <View position="relative" background={this.props.account.id === this.props.focused ? 'secondary' : null}>
+      <View position="relative"
+        background={this.props.account.id === this.props.focused ? 'alert' : null}
+      >
         <Tooltip
           renderTip={this.renderTip}
           placement="end"
           on={['hover', 'focus']}
           onShowContent={this.showInfo}
         >
-        <Link href={this.props.canvasUrl + '/accounts/' + account.id} target="_top">
+        <Link href={this.props.canvasUrl + '/accounts/' + account.id} target="_top" color={this.props.account.id === this.props.focused ? 'link-inverse' : null}>
           {account.name}
         </Link>
         </Tooltip>
