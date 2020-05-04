@@ -46,7 +46,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: outputPath,
-    filename: '[name].js'
+    filename: '[name].[contenthash].js'
   },
   devServer: {
     contentBase: outputPath,
