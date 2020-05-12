@@ -16,10 +16,40 @@ This works because our webpack config checks for `localhost.pem` and `localhost-
 
 This tool needs to have a developer key setup for it with permission to view account sub accounts. 
 
+### LTI Key
+
+To configure the tool in Canvas setup a new LTI Developer key:
+
+* Key name: View Sub-accounts
+* Owner email: acit-sys-apps@maillist.ox.ac.uk
+* Redirect URIs: https://lti.canvas.ox.ac.uk/lti/login
+* Method: Manual entry
+* Title: View Sub-accounts
+* Description: A read only view of the sub-accounts.
+* Target Link URI: https://oxctl-canvas-subaccounts-prod.s3-eu-west-1.amazonaws.com/index.html
+* OpenID Connect Initiation URL: https://lti.canvas.ox.ac.uk/lti/login_initiation/universityofoxford-sa
+* JWK Method: Public JWK URL - https://lti.canvas.ox.ac.uk/.well-known/jwks.json
+* Additional Settings: Custom fields:
+
     canvas_account_id=${Canvas.account.id}
     canvas_account_name=${Canvas.account.name}
     canvas_api_base_url=$Canvas.api.baseUrl
     com_instructure_brand_config_json_url=$com.instructure.brandConfigJSON.url
+
+* Privacy Level: Public
+* Placements: Account Navigation
+
+### API Key
+
+To configure the proxy a API Developer key is needed:
+
+* Key name: View Sub-accounts
+* Owner email: acit-sys-apps@maillist.ox.ac.uk
+* Redirect URIs: https://proxy.canvas.ox.ac.uk/login/oauth2/code/universityofoxford-sa
+* Enforce Scopes: Checked
+* Scopes:
+  * url:GET|/api/v1/accounts/:account_id/courses
+  * url:GET|/api/v1/accounts/:account_id/sub_accounts
 
 ## Deployment
 
