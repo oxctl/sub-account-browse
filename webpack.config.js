@@ -43,7 +43,10 @@ if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
 
 module.exports = {
   ...baseConfig,
-  entry: './src/index.js',
+  entry: {
+    polyfills: './src/polyfills.js',
+    index: './src/index.js',
+   },
   output: {
     path: outputPath,
     filename: '[name].[contenthash].js'
