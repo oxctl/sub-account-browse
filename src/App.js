@@ -47,8 +47,8 @@ const settings = {
     'proxyServer': 'https://proxy.canvas.ox.ac.uk'
   },
   'https://oxctl-canvas-subaccounts-dev.s3-eu-west-1.amazonaws.com': {
-    'ltiServer': 'https://lti.canvas.ox.ac.uk',
-    'proxyServer': 'https://proxy.canvas.ox.ac.uk'
+    'ltiServer': 'https://lti-dev.canvas.ox.ac.uk',
+    'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
   },
   'https://oxctl-canvas-subaccounts-prod.s3-eu-west-1.amazonaws.com': {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
