@@ -50,7 +50,7 @@ jobs:
         # The name of the archive must include the build number to allow us to cleanup older versions
         run: |
           echo "$ARCHIVE"
-          tar -C build -zcvf $ARCHIVE .
+          tar -C __build__ -zcvf $ARCHIVE .
           aws s3 cp $ARCHIVE s3://${S3_ARTIFACT_BUCKET}/
           echo "::set-output name=artifact::$ARCHIVE"
 
