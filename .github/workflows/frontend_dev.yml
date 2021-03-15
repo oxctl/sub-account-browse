@@ -20,6 +20,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    timeout-minutes: 15
     outputs:
       artifact: ${{ steps.upload.outputs.artifact }}
     steps:
@@ -56,6 +57,7 @@ jobs:
 
   deploy-dev:
     runs-on: ubuntu-20.04
+    timeout-minutes: 5
     needs: build
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
