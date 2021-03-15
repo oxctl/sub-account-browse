@@ -39,7 +39,7 @@ jobs:
       - run: mkdir files
       - name: Unzip files
         run: tar -zxvf build.tgz -C files
-      - name: Upload to bucket ${{ env.S3_ARTIFACT_BUCKET }}
+      - name: Upload to bucket ${{ env.S3_PROD_BUCKET }}
       # This is so that if the upload was done after a newer build was completed we still upload all the files.
         run: aws s3 cp files "s3://${S3_PROD_BUCKET}/" --recursive --no-progress
       - name: Remove old files

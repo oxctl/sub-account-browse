@@ -7,7 +7,8 @@
     "lint": "ui-test --lint",
     "lint:fix": "ui-test --lint --fix",
     "clean": "ui-build --clean",
-    "open:sandbox": "ui-scripts open-sandbox"
+    "open:sandbox": "ui-scripts open-sandbox",
+    "postversion": "git push && git push --tags"
   },
   "browserslist": [
     "> 5% in GB"
