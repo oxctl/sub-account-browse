@@ -1,3 +1,8 @@
+# Canvas Subaccount Browser
+
+[![Frontend DEV](https://github.com/oxctl/canvas-subaccounts/actions/workflows/frontend_dev.yml/badge.svg)](https://github.com/oxctl/canvas-subaccounts/actions/workflows/frontend_dev.yml)
+
+This small tool is to allow people to browse the sub-account hierarchy who don't have permission to change the sub-account hierarchy.
 
 ## SSL
 
