@@ -2,17 +2,26 @@
   "name": "canvas-subaccounts",
   "version": "1.0.1",
   "scripts": {
-    "start": "ui-build --bundle --watch -p 3000",
-    "build": "ui-build --bundle",
-    "lint": "ui-test --lint",
-    "lint:fix": "ui-test --lint --fix",
-    "clean": "ui-build --clean",
-    "open:sandbox": "ui-scripts open-sandbox",
-    "postversion": "git push && git push --tags"
+    "start": "HTTPS=true SSL_CRT_FILE=./localhost.pem SSL_KEY_FILE=./localhost-key.pem react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "browserslist": [
-    "> 5% in GB"
-  ],
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "private": true,
   "dependencies": {
     "@instructure/canvas-theme": "^6.24.0",
@@ -40,15 +49,16 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "promise.prototype.finally": "^3.1.1"
+    "promise.prototype.finally": "^3.1.1",
+    "uuid": "^8.0.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "react-scripts": "3.4.1"
   },
   "devDependencies": {
-    "@instructure/ui-babel-preset": "^6.24.0",
-    "@instructure/ui-eslint-config": "^6.24.0",
-    "@instructure/ui-postcss-config": "^6.24.0",
-    "@instructure/ui-scripts": "^6.24.0",
-    "@instructure/ui-stylelint-config": "^6.24.0",
-    "@instructure/ui-webpack-config": "^6.24.0",
-    "html-webpack-plugin": "^3.2.0"
+    "@instructure/ui-eslint-config": "~6.24.0",
+    "@instructure/ui-postcss-config": "~6.24.0",
+    "@instructure/ui-stylelint-config": "~6.24.0"
   }
 }
