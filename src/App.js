@@ -80,8 +80,8 @@ class App extends React.Component {
 
     if (this.state.tryLoading) {
       // TODO Need to stash this in local storage
-      var params = new URLSearchParams(window.location.search)
-      var token = params.get('token')
+      const params = new URLSearchParams(window.location.search)
+      const token = params.get('token')
       const formData = new FormData()
       formData.append('key', token)
       // How to pass this across?
@@ -90,7 +90,6 @@ class App extends React.Component {
           body: formData
         }
       ).then(response => {
-        console.log('first eres ', response)
           if (!response.ok) {
             const token = localStorage.getItem('token')
             if (token) {
@@ -101,17 +100,17 @@ class App extends React.Component {
           }
         }
       ).then(response => {
-
-        console.log('res ', response)
         return response.json()
       } 
       ).then(json => {
-
-        console.log('json ', json)
-        this.token = json.token_value
-        localStorage.setItem('token', json.token_value)
-        this.updateToken(json.token_value, servers)
-      }).finally(() => {
+          this.token = json.token_value
+          localStorage.setItem('token', json.token_value)
+          this.updateToken(json.token_value, servers)
+      })
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => {
         // this.setState({ loading: false })
       })
     }
