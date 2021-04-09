@@ -37,10 +37,8 @@ import console from '@instructure/console'
 
 const settings = {
   'https://localhost:3000': {
-    // 'ltiServer': 'https://localhost:28443',
-    'ltiServer': 'https://lti.canvas.ox.ac.uk',
-    // 'proxyServer': 'https://localhost:18443'
-    'proxyServer': 'https://proxy.canvas.ox.ac.uk'
+    'ltiServer': process.env.LTI_URL,
+    'proxyServer': process.env.LTI_URL,
   },
   'https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com': {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
@@ -75,10 +73,11 @@ class App extends React.Component {
   componentDidMount() {
     // TODO handling not defined.
     const servers = settings[window.location.origin]
+
     if (this.state.tryLoading) {
       // TODO Need to stash this in local storage
-      var params = new URLSearchParams(window.location.search)
-      var token = params.get('token')
+      const params = new URLSearchParams(window.location.search)
+      const token = params.get('token')
       const formData = new FormData()
       formData.append('key', token)
       // How to pass this across?
@@ -96,12 +95,18 @@ class App extends React.Component {
             return response
           }
         }
-      ).then(response => response.json()
+      ).then(response => {
+        return response.json()
+      } 
       ).then(json => {
-        this.token = json.token_value
-        localStorage.setItem('token', json.token_value)
-        this.updateToken(json.token_value, servers)
-      }).finally(() => {
+          this.token = json.token_value
+          localStorage.setItem('token', json.token_value)
+          this.updateToken(json.token_value, servers)
+      })
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => {
         // this.setState({ loading: false })
       })
     }
