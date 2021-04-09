@@ -48,7 +48,7 @@ To configure the tool in Canvas setup a new LTI Developer key:
 * Target Link URI: https://oxctl-canvas-subaccounts-prod.s3-eu-west-1.amazonaws.com/index.html
 * OpenID Connect Initiation URL: 
   #### Production
-  - https://lti.canvas.ox.ac.uk/lti/login_initiation/universityofoxford-sa
+  - https://lti.canvas.ox.ac.uk/lti/login_initiation/universityofoxford-sa-`yourFirstName`
   #### Dev
   - https://lti-dev.canvas.ox.ac.uk/lti/login_initiation/oxeval-sa-`yourFirstName`
 
@@ -76,10 +76,10 @@ To configure the proxy a API Developer key is needed:
 * Owner email: acit-sys-apps@maillist.ox.ac.uk
 * Redirect URIs: 
   #### Production
-  - https://proxy.canvas.ox.ac.uk/login/oauth2/code/universityofoxford-sa
+  - https://proxy.canvas.ox.ac.uk/login/oauth2/code/universityofoxford-sa-`yourFirstName`
   #### Dev
-  - https://proxy-dev.canvas.ox.ac.uk/login/oauth2/code/universityofoxford-sa
-  
+  - https://proxy-dev.canvas.ox.ac.uk/login/oauth2/code/oxeval-sa-`yourFirstName`
+
 * Enforce Scopes: Checked
 * Scopes:
   * url:GET|/api/v1/accounts/:account_id/courses

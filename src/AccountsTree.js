@@ -66,17 +66,9 @@ class AccountsTree extends React.Component {
     let url = this.props.url + '/api/v1/accounts/' + accountId + '/sub_accounts?per_page=' + PER_PAGE + '&recursive=true'
     const data = await this.loadAll(url)
     const collections = this.updateCollections(data)
-    if(openAll) {
-      // This has performance issues on a large tree
-      /* eslint-disable no-param-reassign */
-      const open = Object.values(collections).filter(account => account.collections).reduce((open, account) => {
-        open[account.id] = true
-        return open
-      }, {})
-    }
+
     this.setState({
       collections: collections,
-      // open: open,
       loadingAll: false
     })
   }
@@ -169,7 +161,6 @@ class AccountsTree extends React.Component {
     if (!this.state.loadAll) {
       await this.loadAccountsRecursive(this.props.accountId)
     }
-    const collections = this.state.collections
     const accountId = this.props.accountId
     const search = this.state.search.toLowerCase()
     const from = this.state.from

@@ -37,10 +37,8 @@ import console from '@instructure/console'
 
 const settings = {
   'https://localhost:3000': {
-    // 'ltiServer': 'https://localhost:28443',
-    'ltiServer': 'https://lti-dev.canvas.ox.ac.uk',
-    // 'proxyServer': 'https://localhost:18443'
-    'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
+    'ltiServer': process.env.LTI_URL,
+    'proxyServer': process.env.LTI_URL,
   },
   'https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com': {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
@@ -75,8 +73,6 @@ class App extends React.Component {
   componentDidMount() {
     // TODO handling not defined.
     const servers = settings[window.location.origin]
-
-    console.log('server ', servers)
 
     if (this.state.tryLoading) {
       // TODO Need to stash this in local storage
