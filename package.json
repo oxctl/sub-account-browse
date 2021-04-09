@@ -44,6 +44,7 @@
     "@instructure/ui-tooltip": "^6.24.0",
     "@instructure/ui-tree-browser": "^6.24.0",
     "@instructure/ui-view": "^6.24.0",
+    "@instructure/ui-test-utils": "~7.3.0",
     "jwt-decode": "^2.2.0",
     "parse-link-header": "^1.0.1",
     "prop-types": "^15.7.2",
