@@ -4,6 +4,7 @@ import parseLinkHeader from 'parse-link-header'
 
 import { Loading } from './Loading'
 import { Button } from '@instructure/ui-buttons'
+import { Heading } from '@instructure/ui-heading'
 import { TextInput } from '@instructure/ui-text-input'
 import ListAccounts from './ListAccounts'
 import { View } from '@instructure/ui-view'
@@ -240,7 +241,10 @@ class AccountsTree extends React.Component {
     const collections = this.state.collections
     // Attempting to do this with flexbox resulted in the stick positioning not working
     return <React.Fragment>
-      <View as="div" position="sticky" insetBlockStart="0" textAlign="end">
+      <View>
+        <Heading level="h1" > View Sub-accounts </Heading> 
+      </View>
+      <View as="div" position="sticky" insetBlockStart="0" textAlign="end" >
         <form style={{ display: 'inline' }} onSubmit={this.handleSearch}>
           <TextInput
             messages={this.state.searchMessages} width="15rem"
