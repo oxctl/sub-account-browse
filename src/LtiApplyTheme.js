@@ -36,7 +36,7 @@ class LtiApplyTheme extends React.Component {
           .then((response) => {
             // Apply the loaded theme.
             this.setState({
-              theme: ApplyTheme.generateTheme('canvas', response.data)
+              theme: ApplyTheme.generateTheme('canvas', response)
             })
           }).finally(() => this.loading = false)
       }
