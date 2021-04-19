@@ -242,7 +242,7 @@ class AccountsTree extends React.Component {
     // Attempting to do this with flexbox resulted in the stick positioning not working
     return <React.Fragment>
       <View>
-        <Heading level="h1" > <ScreenReaderContent> View Sub-accounts </ScreenReaderContent> </Heading> 
+      <ScreenReaderContent> <Heading level="h1" > View Sub-accounts  </Heading> </ScreenReaderContent>
       </View>
       <View as="div" position="sticky" insetBlockStart="0" textAlign="end" role="search">
         <form style={{ display: 'inline' }} onSubmit={this.handleSearch}>
