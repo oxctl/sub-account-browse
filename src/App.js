@@ -26,29 +26,30 @@ import React from 'react'
 
 import { theme } from '@instructure/canvas-theme'
 import jwtDecode from 'jwt-decode'
-import LtiApplyTheme from './LtiApplyTheme'
+import { LtiApplyTheme } from 'ui-lti'
 import LaunchOAuth from './LaunchOAuth'
 import AccountsTree from './AccountsTree'
 import { View } from '@instructure/ui-view'
 import { Loading } from './Loading'
 import Error from './Error/Error'
 import console from '@instructure/console'
+import {LOCAL, DEV, STAG, PROD} from './utils/constants'
 
 
 const settings = {
-  'https://localhost:3000': {
+  [LOCAL]: {
     'ltiServer': process.env.LTI_URL,
-    'proxyServer': process.env.LTI_URL,
+    'proxyServer': process.env.PROXY_URL
   },
-  'https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com': {
+  [DEV]: {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
     'proxyServer': 'https://proxy.canvas.ox.ac.uk'
   },
-  'https://oxctl-canvas-subaccounts-dev.s3-eu-west-1.amazonaws.com': {
+  [STAG]: {
     'ltiServer': 'https://lti-dev.canvas.ox.ac.uk',
     'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
   },
-  'https://oxctl-canvas-subaccounts-prod.s3-eu-west-1.amazonaws.com': {
+  [PROD]: {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
     'proxyServer': 'https://proxy.canvas.ox.ac.uk'
   }
