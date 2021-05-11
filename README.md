@@ -102,8 +102,11 @@ of the version number.
 
     npm version minor
 
-This will increment the build version, create a git tag and push the changes to the repository. The new version will
-then get deployed to the development environment. Then if the deployment went OK you should be able to deploy the new
+This will increment the build version and create a git tag. Then if it looks ok you can push the changes with
+
+    git push && git push --tags
+
+The new version will then get deployed to the development environment. Then if the deployment went OK you should be able to deploy the new
 version to the production environment using the GitHub Action for production deploys. It's a manual job that requests
 git version to deploy eg (v1.7.0, all tag names start with a 'v').
 
