@@ -46,7 +46,7 @@
     "@instructure/ui-view": "^6.24.0",
     "@instructure/ui-test-utils": "~7.3.0",
     "jwt-decode": "^2.2.0",
-    "parse-link-header": "^1.0.1",
+    "parse-link-header": "^2.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
