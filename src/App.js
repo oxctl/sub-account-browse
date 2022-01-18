@@ -37,8 +37,8 @@ import console from '@instructure/console'
 
 const settings = {
   'https://localhost:3000': {
-    'ltiServer': process.env.LTI_URL,
-    'proxyServer': process.env.LTI_URL,
+    'ltiServer': process.env.REACT_APP_LTI_URL,
+    'proxyServer': process.env.REACT_APP_PROXY_URL,
   },
   'https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com': {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
@@ -126,7 +126,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(process.env.NODE_ENV)
     return (
       <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl}>
         <View padding="small" as="div">
