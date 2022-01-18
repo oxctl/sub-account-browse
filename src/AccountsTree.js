@@ -49,7 +49,7 @@ class AccountsTree extends React.Component {
     this.setState({ collections: root })
 
     if (this.state.tryLoading) {
-      this.loadAccounts(this.props.accountId).catch(this.handleError)
+      this.loadAccounts(this.props.accountId).catch(this.props.handleError)
     }
   }
 
