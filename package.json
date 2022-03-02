@@ -59,6 +59,7 @@
     "uuid": "^8.0.0"
   },
   "devDependencies": {
+    "@instructure/ui-eslint-config": "^7.6.0",
     "@instructure/ui-postcss-config": "^7.6.0",
     "@instructure/ui-stylelint-config": "^7.6.0"
   }
