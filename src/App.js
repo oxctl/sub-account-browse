@@ -32,7 +32,7 @@ import AccountsTree from './AccountsTree'
 import { View } from '@instructure/ui-view'
 import { Loading } from './Loading'
 import Error from './Error/Error'
-import console from '@instructure/console'
+import { LtiTokenRetriever } from '@oxctl/ui-lti'
 
 
 const settings = {
@@ -68,58 +68,19 @@ class App extends React.Component {
     error: null
   }
 
-  token = null
-
-  componentDidMount() {
-    // TODO handling not defined.
-    const servers = settings[window.location.origin]
-
-    if (this.state.tryLoading) {
-      // TODO Need to stash this in local storage
-      const params = new URLSearchParams(window.location.search)
-      const token = params.get('token')
-      const formData = new FormData()
-      formData.append('key', token)
-      // How to pass this across?
-      fetch(servers.ltiServer + '/token', {
-          method: 'POST',
-          body: formData
-        }
-      ).then(response => {
-          if (!response.ok) {
-            const token = localStorage.getItem('token')
-            if (token) {
-              this.updateToken(token, servers)
-            }
-          } else {
-            return response
-          }
-        }
-      ).then(response => {
-        return response.json()
-      } 
-      ).then(json => {
-          this.token = json.token_value
-          localStorage.setItem('token', json.token_value)
-          this.updateToken(json.token_value, servers)
-      })
-      .catch(error => {
-        console.error(error);
-      })
-      .finally(() => {
-        // this.setState({ loading: false })
-      })
-    }
+  constructor(props, context) {
+    super(props, context)
+    this.servers = settings[window.location.origin]
   }
 
-  updateToken(token, servers) {
-    this.jwt = jwtDecode(token)
+  updateToken = (token) => {
+    const jwt = jwtDecode(token)
     this.setState({
-      comInstructureBrandConfigJsonUrl: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].com_instructure_brand_config_json_url,
-      accountId: parseInt(this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_id),
-      accountName: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_name,
-      canvasUrl: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_api_base_url,
-      proxyUrl: servers.proxyServer,
+      comInstructureBrandConfigJsonUrl: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].com_instructure_brand_config_json_url,
+      accountId: parseInt(jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_id),
+      accountName: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_name,
+      canvasUrl: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_api_base_url,
+      proxyUrl: this.servers.proxyServer,
       token: token,
       loading: false
     })
@@ -127,13 +88,15 @@ class App extends React.Component {
 
   render() {
     return (
-      <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl}>
-        <View padding="small" as="div">
-          <Error message={this.state.error}>
-            {(this.state.loading) ? <Loading/> : this.renderContent()}
-          </Error>
-        </View>
-      </LtiApplyTheme>
+      <LtiTokenRetriever ltiServer={this.servers.ltiServer} handleJwt={this.updateToken}>
+        <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl}>
+          <View padding="small" as="div">
+            <Error message={this.state.error}>
+              {(this.state.loading) ? <Loading/> : this.renderContent()}
+            </Error>
+          </View>
+        </LtiApplyTheme>
+      </LtiTokenRetriever>
     )
   }
 
