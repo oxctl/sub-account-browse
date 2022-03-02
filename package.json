@@ -34,6 +34,7 @@
     "@instructure/ui-icons": "^7.16.0",
     "@instructure/ui-link": "^7.16.0",
     "@instructure/ui-list": "^7.16.0",
+    "@instructure/ui-modal": "^7.16.0",
     "@instructure/ui-spinner": "^7.16.0",
     "@instructure/ui-svg-images": "^7.16.0",
     "@instructure/ui-text": "^7.16.0",
