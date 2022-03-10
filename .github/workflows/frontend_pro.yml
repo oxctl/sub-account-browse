@@ -7,7 +7,7 @@ env:
   S3_ARTIFACT_BUCKET: ${{ github.repository_owner }}-${{ github.event.repository.name }}-dist
   S3_PROD_BUCKET: ${{ github.repository_owner }}-${{ github.event.repository.name }}-prod
   AWS_DEFAULT_REGION: "eu-west-1"
-  NODE_VERSION: 12.4.0
+  NODE_VERSION: 14.19.0
 
 on:
   workflow_dispatch:
