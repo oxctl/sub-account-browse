@@ -4,8 +4,8 @@
 name: Frontend DEV
 
 env:
-  S3_ARTIFACT_BUCKET: ${{ github.repository_owner }}-${{ github.event.repository.name }}-dist
-  S3_DEV_BUCKET: ${{ github.repository_owner }}-${{ github.event.repository.name }}-dev
+  S3_ARTIFACT_BUCKET: oxctl-subaccounts-dist
+  S3_DEV_BUCKET: oxctl-subaccounts-dev
   AWS_DEFAULT_REGION: "eu-west-1"
   NODE_VERSION: 14.19.0
 
