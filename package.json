@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts build",
     "test": "react-scripts test jest --passWithNoTests",
     "eject": "react-scripts eject"
   },
