@@ -45,7 +45,11 @@ To configure the tool in Canvas setup a new LTI Developer key:
 * Method: Manual entry
 * Title: View Sub-accounts
 * Description: A read only view of the sub-accounts.
-* Target Link URI: https://oxctl-canvas-subaccounts-prod.s3-eu-west-1.amazonaws.com/index.html
+* Target Link URI:
+  #### Production
+  - https://static.canvas.ox.ac.uk/subaccounts/
+  #### Dev
+  - https://static-dev.canvas.ox.ac.uk/subaccounts/
 * OpenID Connect Initiation URL: 
   #### Production
   - https://lti.canvas.ox.ac.uk/lti/login_initiation/universityofoxford-sa-`yourFirstName`
