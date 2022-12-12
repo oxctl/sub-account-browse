@@ -27,12 +27,11 @@ import React from 'react'
 import { theme } from '@instructure/canvas-theme'
 import jwtDecode from 'jwt-decode'
 import LtiApplyTheme from './LtiApplyTheme'
-import LaunchOAuth from './LaunchOAuth'
 import AccountsTree from './AccountsTree'
 import { View } from '@instructure/ui-view'
 import { Loading } from './Loading'
 import Error from './Error/Error'
-import { LtiTokenRetriever } from '@oxctl/ui-lti'
+import { LtiTokenRetriever, LaunchOAuth } from '@oxctl/ui-lti'
 
 
 const settings = {
@@ -109,9 +108,10 @@ class App extends React.Component {
   }
 
   renderContent() {
-    return <LaunchOAuth needsToken={this.state.needsToken} jwt={this.state.token}
-                        url={this.state.proxyUrl + '/tokens/check'}
-                        handleLoginDone={() => this.setState({ needsToken: false })}>
+    return <LaunchOAuth promptLogin={this.state.needsToken}
+                        accessToken={this.state.token}
+                        server={{proxyServer: this.state.proxyUrl}}
+                        promptUserLogin={() => this.setState({ needsToken: false })}>
       <AccountsTree token={this.state.token} url={this.state.proxyUrl} accountId={this.state.accountId}
                     accountName={this.state.accountName} canvasUrl={this.state.canvasUrl}
                     handle403={this.handle403}
