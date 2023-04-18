@@ -72,7 +72,8 @@ class App extends React.Component {
     canvasUrl: null,
     needsToken: false,
     loading: true,
-    error: null
+    error: null,
+    canvasUserPrefersHighContrast: false
   }
 
   constructor(props, context) {
@@ -84,6 +85,7 @@ class App extends React.Component {
     const jwt = jwtDecode(token)
     this.setState({
       comInstructureBrandConfigJsonUrl: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].com_instructure_brand_config_json_url,
+      canvasUserPrefersHighContrast: this.jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_user_prefers_high_contrast === "true",
       accountId: parseInt(jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_id),
       accountName: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_name,
       canvasUrl: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_api_base_url,
@@ -96,7 +98,7 @@ class App extends React.Component {
   render() {
     return (
       <LtiTokenRetriever ltiServer={this.servers.ltiServer} handleJwt={this.updateToken}>
-        <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl}>
+        <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl} highContrast={this.state.canvasUserPrefersHighContrast}>
           <View padding="small" as="div">
             <Error message={this.state.error}>
               {(this.state.loading) ? <Loading/> : this.renderContent()}
