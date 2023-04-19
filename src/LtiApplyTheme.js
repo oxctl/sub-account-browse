@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ApplyTheme } from '@instructure/ui-themeable'
+import { EmotionThemeProvider } from '@instructure/emotion'
+import { canvas, canvasHighContrast } from '@instructure/ui-themes'
 
 /**
  * This attempts to load the theme from the supplied URL and then applies the theme to all the children.
@@ -12,7 +13,8 @@ class LtiApplyTheme extends React.Component {
      * The URL to load the theme variables from.
      */
     url: PropTypes.string,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    highContrast: PropTypes.bool
   }
 
   static defaultProps = {
@@ -33,10 +35,11 @@ class LtiApplyTheme extends React.Component {
       if (this.props.url) {
         this.loading = true
         fetch(this.props.url).then(response => response.json())
-          .then((response) => {
+          .then((json) => {
             // Apply the loaded theme.
+            let newTheme = this.props.highContrast ? canvasHighContrast : { ...canvas, ...json }
             this.setState({
-              theme: ApplyTheme.generateTheme('canvas', response)
+              theme: newTheme
             })
           }).finally(() => this.loading = false)
       }
@@ -51,9 +54,9 @@ class LtiApplyTheme extends React.Component {
 
   render() {
     return (
-      <ApplyTheme theme={this.state.theme}>
+      <EmotionThemeProvider theme={this.state.theme}>
         {this.props.children}
-      </ApplyTheme>
+      </EmotionThemeProvider>
     )
   }
 }
