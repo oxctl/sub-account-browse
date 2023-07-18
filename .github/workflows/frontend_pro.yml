@@ -8,7 +8,6 @@ env:
   S3_ARTIFACT_BUCKET: oxctl-subaccounts-dist
   S3_PROD_BUCKET: oxctl-subaccounts-prod
   AWS_DEFAULT_REGION: "eu-west-1"
-  NODE_VERSION: 14.19.0
 
 on:
   workflow_dispatch:
@@ -16,6 +15,12 @@ on:
       tag:
         description: 'Tag to deploy'
         required: true
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Tag to deploy'
+        required: true
+        type: string
 
 jobs:
   deploy-prod:
@@ -24,7 +29,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
-      TAG: ${{ github.event.inputs.tag }}
+      TAG: ${{ inputs.tag }}
     steps:
       - name: Start deployment
         uses: bobheadxi/deployments@v1
