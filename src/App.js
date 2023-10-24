@@ -39,23 +39,11 @@ const settings = {
     'ltiServer': process.env.REACT_APP_LTI_URL,
     'proxyServer': process.env.REACT_APP_PROXY_URL,
   },
-  'https://oxctl-subaccounts.s3-eu-west-1.amazonaws.com': {
-    'ltiServer': 'https://lti.canvas.ox.ac.uk',
-    'proxyServer': 'https://proxy.canvas.ox.ac.uk'
-  },
-  'https://oxctl-canvas-subaccounts-dev.s3-eu-west-1.amazonaws.com': {
+  'https://master.canvas-subaccounts.pages.dev': {
     'ltiServer': 'https://lti-dev.canvas.ox.ac.uk',
     'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
   },
-  'https://oxctl-canvas-subaccounts-prod.s3-eu-west-1.amazonaws.com': {
-    'ltiServer': 'https://lti.canvas.ox.ac.uk',
-    'proxyServer': 'https://proxy.canvas.ox.ac.uk'
-  },
-  'https://static-dev.canvas.ox.ac.uk': {
-    'ltiServer': 'https://lti-dev.canvas.ox.ac.uk',
-    'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
-  },
-  'https://static.canvas.ox.ac.uk': {
+  'https://canvas-subaccounts.canvas.ox.ac.uk': {
     'ltiServer': 'https://lti.canvas.ox.ac.uk',
     'proxyServer': 'https://proxy.canvas.ox.ac.uk'
   }
