@@ -89,8 +89,7 @@ To configure the proxy a API Developer key is needed:
 
 ## Deployment
 
-This codebase is deployed into AWS S3 buckets by GitHub Actions. The deployments to the environments are noted on the
-GitHub page under the environments. 
+This code is deployed to Cloudflare.
 
 ### Development 
 
