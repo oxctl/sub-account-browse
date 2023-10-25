@@ -21,6 +21,22 @@ This works because our webpack config checks for `localhost.pem` and `localhost-
 
 This tool needs to have a developer key setup for it with permission to view account sub accounts. 
 
+### Automatic Configuration
+
+There is [lti-auto-configuration](https://github.com/oxctl/lti-auto-configuration) that will attempt to automatically configure Canvas and the Tool Support server (it is installed as a development dependency). To use this copy the configuration example:
+
+```bash
+cp tool-config/local-example.json tool-config/local.json
+```
+Then configure the values in `local.json` to match your setup. Then to deploy the tool run:
+```bash
+lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -c
+```
+This should add a copy of the tool and make it available for testing. You can then tidy up with:
+```bash
+lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -d
+```
+
 ### LTI Key
 
 To configure the tool in Canvas setup a new LTI Developer key:
