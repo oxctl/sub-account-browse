@@ -17,11 +17,25 @@ To enable SSL in development:
 This works because our webpack config checks for `localhost.pem` and `localhost-key.pem` and if they exist starts in HTTPS mode instead.
 
 
-
-
 ## Configuration
 
 This tool needs to have a developer key setup for it with permission to view account sub accounts. 
+
+### Automatic Configuration
+
+There is [lti-auto-configuration](https://github.com/oxctl/lti-auto-configuration) that will attempt to automatically configure Canvas and the Tool Support server (it is installed as a development dependency). To use this copy the configuration example:
+
+```bash
+cp tool-config/local-example.json tool-config/local.json
+```
+Then configure the values in `local.json` to match your setup. Then to deploy the tool run:
+```bash
+lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -c
+```
+This should add a copy of the tool and make it available for testing. You can then tidy up with:
+```bash
+lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -d
+```
 
 ### LTI Key
 
@@ -47,9 +61,9 @@ To configure the tool in Canvas setup a new LTI Developer key:
 * Description: A read only view of the sub-accounts.
 * Target Link URI:
   #### Production
-  - https://static.canvas.ox.ac.uk/subaccounts/
+  - https://canvas-subaccounts.canvas.ox.ac.uk
   #### Dev
-  - https://static-dev.canvas.ox.ac.uk/subaccounts/
+  - https://master.canvas-subaccounts.pages.dev
 * OpenID Connect Initiation URL: 
   #### Production
   - https://lti.canvas.ox.ac.uk/lti/login_initiation/universityofoxford-sa-`yourFirstName`
@@ -91,28 +105,25 @@ To configure the proxy a API Developer key is needed:
 
 ## Deployment
 
-This codebase is deployed into AWS S3 buckets by GitHub Actions. The deployments to the environments are noted on the
-GitHub page under the environments. 
+This code is deployed to Cloudflare.
 
 ### Development 
 
 The deploy to development is done automatically when a new commit is made to master.
 
-### Production
+### Releasing
 
-To deploy a new release to production do with a minor version increment (eg 1.6.0 -> 1.7.0), see the
-[npm versions](https://docs.npmjs.com/cli/v7/commands/npm-version) page for details on how to increment different parts
-of the version number.
+To release the latest code merge the master branch into the release branch Cloudflare will then deploy this to production.
+The best way to do this is to create a PR from `master` to `release`, this allows you to check what's going to be released.
+There is a GitHub action that can be manually run to do this.
 
-    npm version minor
+Alternatively to do this locally run checkout the release branch, fetch the latest code from the origin and run:
+```shell
+git merge origin/master
+```
 
-This will increment the build version and create a git tag. Then if it looks ok you can push the changes with
+To see what is about to go into a release you can preview the changes between [master and release](https://github.com/oxctl/canvas-subaccounts/compare/release...master), then to double check a PR can be created to merge the changes, reviewed and merged (at which point the release branch is built and deployed).
 
-    git push && git push --tags
-
-The new version will then get deployed to the development environment. Then if the deployment went OK you should be able to deploy the new
-version to the production environment using the GitHub Action for production deploys. It's a manual job that requests
-git version to deploy eg (v1.7.0, all tag names start with a 'v').
 
 ## Notes
 
