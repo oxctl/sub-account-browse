@@ -1,5 +1,5 @@
 {
-  "name": "canvas-subaccounts",
+  "name": "sub-account-browse",
   "version": "1.5.1",
   "scripts": {
     "start": "react-scripts start",
