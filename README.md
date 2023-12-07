@@ -1,6 +1,6 @@
-# Canvas Subaccount Browser
+# Subaccount Browse
 
-[![Frontend DEV](https://github.com/oxctl/canvas-subaccounts/actions/workflows/frontend_dev.yml/badge.svg)](https://github.com/oxctl/canvas-subaccounts/actions/workflows/frontend_dev.yml)
+[![Frontend DEV](https://github.com/oxctl/sub-account-browse/actions/workflows/frontend_dev.yml/badge.svg)](https://github.com/oxctl/sub-account-browse/actions/workflows/frontend_dev.yml)
 
 This small tool is to allow people to browse the sub-account hierarchy who don't have permission to change the sub-account hierarchy.
 
@@ -122,7 +122,7 @@ Alternatively to do this locally run checkout the release branch, fetch the late
 git merge origin/master
 ```
 
-To see what is about to go into a release you can preview the changes between [master and release](https://github.com/oxctl/canvas-subaccounts/compare/release...master), then to double check a PR can be created to merge the changes, reviewed and merged (at which point the release branch is built and deployed).
+To see what is about to go into a release you can preview the changes between [master and release](https://github.com/oxctl/sub-account-browse/compare/release...master), then to double check a PR can be created to merge the changes, reviewed and merged (at which point the release branch is built and deployed).
 
 
 ## Notes
