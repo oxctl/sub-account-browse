@@ -101,7 +101,7 @@ class AccountsTree extends React.Component {
       })
   }
 
-  handleError = (response) => {
+  handleError = async (response) => {
     if (!response.ok) {
       if (response.status === 403) {
         this.props.handle403()
@@ -113,6 +113,8 @@ class AccountsTree extends React.Component {
           this.props.handleError('You don\'t have permission to see the list of accounts. Or your session has expired, please try relaunching the tool')
         }
       } else {
+        const err = await response.text()
+        console.error(err)
         this.props.handleError('Bad response: ' + response.status)
       }
       return Promise.reject()
