@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import parseLinkHeader from 'parse-link-header'
 
-import { Loading } from './Loading'
+import Loading from './Loading'
 import { Button } from '@instructure/ui-buttons'
 import { Heading } from '@instructure/ui-heading'
 import { TextInput } from '@instructure/ui-text-input'
