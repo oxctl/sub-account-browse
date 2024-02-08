@@ -10,12 +10,10 @@ This small tool is to allow people to browse the sub-account hierarchy who don't
 
 To enable SSL in development:
  
-* Install [mkcert](https://github.com/FiloSottile/mkcert)
-* Create a cert for localhost: `mkcert localhost`
+* Install [mkcert](https://github.com/FiloSottile/mkcert) and initialise (`mkcert -install`).
 * Start dev server: `npm start`
 
-This works because our webpack config checks for `localhost.pem` and `localhost-key.pem` and if they exist starts in HTTPS mode instead.
-
+This will use the mkcert plugin which will use a trusted self-signed certificate for the development server.
 
 ## Configuration
 
@@ -30,11 +28,11 @@ cp tool-config/local-example.json tool-config/local.json
 ```
 Then configure the values in `local.json` to match your setup. Then to deploy the tool run:
 ```bash
-lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -c
+npx @oxctl/lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -c
 ```
 This should add a copy of the tool and make it available for testing. You can then tidy up with:
 ```bash
-lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -d
+npx @oxctl/lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -d
 ```
 
 ### LTI Key
@@ -134,11 +132,3 @@ To see what is about to go into a release you can preview the changes between [m
 Canvas has a GraphQL endpoint and in theory it would have been very useful for this tool (it supports accounts and courses)
 however it doesn't allow us to find out the count of courses in a sub-account (we would have to load them all). There's
 also no way to load the SIS ID on the account (although we're not using this at the moment.)
-
-
-For easy setup, we've included all of our build presets. This includes
-configurations for webpack, babel, eslint, etc, and allows you to start developing
-immediately.
-
-To get started, you can import and compose existing components from our library.
-We've included a few commonly used ones already to render the landing page.
