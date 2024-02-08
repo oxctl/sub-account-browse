@@ -1,5 +1,5 @@
 {
-  "name": "canvas-subaccounts",
+  "name": "sub-account-browse",
   "version": "1.5.1",
   "type": "module",
   "scripts": {
@@ -62,7 +62,8 @@
     "uuid": "^8.0.0"
   },
   "devDependencies": {
-    "@instructure/ui-stylelint-config": "^8.52.0",
+    "@instructure/ui-stylelint-config": "^7.5.1",
+    "@oxctl/lti-auto-configuration": "^1.1.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

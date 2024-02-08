@@ -1,6 +1,6 @@
-# Canvas Subaccount Browser
+# Subaccount Browse
 
-[![Frontend DEV](https://github.com/oxctl/canvas-subaccounts/actions/workflows/frontend_dev.yml/badge.svg)](https://github.com/oxctl/canvas-subaccounts/actions/workflows/frontend_dev.yml)
+[![Frontend DEV](https://github.com/oxctl/sub-account-browse/actions/workflows/frontend_dev.yml/badge.svg)](https://github.com/oxctl/sub-account-browse/actions/workflows/frontend_dev.yml)
 
 This small tool is to allow people to browse the sub-account hierarchy who don't have permission to change the sub-account hierarchy.
 
@@ -20,6 +20,22 @@ This works because our webpack config checks for `localhost.pem` and `localhost-
 ## Configuration
 
 This tool needs to have a developer key setup for it with permission to view account sub accounts. 
+
+### Automatic Configuration
+
+There is [lti-auto-configuration](https://github.com/oxctl/lti-auto-configuration) that will attempt to automatically configure Canvas and the Tool Support server (it is installed as a development dependency). To use this copy the configuration example:
+
+```bash
+cp tool-config/local-example.json tool-config/local.json
+```
+Then configure the values in `local.json` to match your setup. Then to deploy the tool run:
+```bash
+lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -c
+```
+This should add a copy of the tool and make it available for testing. You can then tidy up with:
+```bash
+lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -d
+```
 
 ### LTI Key
 
@@ -108,7 +124,7 @@ Alternatively to do this locally run checkout the release branch, fetch the late
 git merge origin/master
 ```
 
-To see what is about to go into a release you can preview the changes between [master and release](https://github.com/oxctl/canvas-subaccounts/compare/release...master), then to double check a PR can be created to merge the changes, reviewed and merged (at which point the release branch is built and deployed).
+To see what is about to go into a release you can preview the changes between [master and release](https://github.com/oxctl/sub-account-browse/compare/release...master), then to double check a PR can be created to merge the changes, reviewed and merged (at which point the release branch is built and deployed).
 
 
 ## Notes
