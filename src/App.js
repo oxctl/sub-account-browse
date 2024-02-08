@@ -26,25 +26,21 @@ import React from 'react'
 
 import { theme } from '@instructure/canvas-theme'
 import jwtDecode from 'jwt-decode'
-import LtiApplyTheme from './LtiApplyTheme'
 import AccountsTree from './AccountsTree'
 import { View } from '@instructure/ui-view'
 import { Loading } from './Loading'
 import Error from './Error/Error'
-import { LtiTokenRetriever, LaunchOAuth } from '@oxctl/ui-lti'
+import { LtiTokenRetriever, LaunchOAuth, LtiApplyTheme } from '@oxctl/ui-lti'
 
 
 const settings = {
   'https://localhost:3000': {
-    'ltiServer': process.env.REACT_APP_LTI_URL,
-    'proxyServer': process.env.REACT_APP_PROXY_URL,
+    'proxyServer': process.env.REACT_APP_PROXY_URL
   },
   'https://master.canvas-subaccounts.pages.dev': {
-    'ltiServer': 'https://lti-dev.canvas.ox.ac.uk',
     'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
   },
   'https://canvas-subaccounts.canvas.ox.ac.uk': {
-    'ltiServer': 'https://lti.canvas.ox.ac.uk',
     'proxyServer': 'https://proxy.canvas.ox.ac.uk'
   }
 }
@@ -85,7 +81,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <LtiTokenRetriever ltiServer={this.servers.ltiServer} handleJwt={this.updateToken}>
+      <LtiTokenRetriever handleJwt={this.updateToken}>
         <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl} highContrast={this.state.canvasUserPrefersHighContrast}>
           <View padding="small" as="div">
             <Error message={this.state.error}>

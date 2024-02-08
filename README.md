@@ -66,6 +66,8 @@ To configure the tool in Canvas setup a new LTI Developer key:
     canvas_account_name=${Canvas.account.name}
     canvas_api_base_url=$Canvas.api.baseUrl
     com_instructure_brand_config_json_url=$com.instructure.brandConfigJSON.url
+    canvas_user_prefers_high_contrast=${Canvas.user.prefersHighContrast}
+
 
 * Privacy Level: Public
 * Placements: Account Navigation
