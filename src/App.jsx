@@ -1,16 +1,16 @@
 import React from 'react'
 
 import jwtDecode from 'jwt-decode'
-import AccountsTree from './AccountsTree'
-import Loading from './Loading'
-import Error from './Error'
+import AccountsTree from './AccountsTree.jsx'
+import Loading from './Loading.jsx'
+import Error from './Error.jsx'
 import { View } from '@instructure/ui-view'
 import { LtiTokenRetriever, LaunchOAuth, LtiApplyTheme } from '@oxctl/ui-lti'
 
 
 const settings = {
   'https://localhost:3000': {
-    'proxyServer': process.env.REACT_APP_PROXY_URL
+    'proxyServer': import.meta.env.VITE_PROXY_URL
   },
   'https://master.canvas-subaccounts.pages.dev': {
     'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
