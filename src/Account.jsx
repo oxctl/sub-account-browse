@@ -6,8 +6,8 @@ import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 import { View } from '@instructure/ui-view'
 import { Tooltip } from '@instructure/ui-tooltip'
 import { Spinner } from '@instructure/ui-spinner'
-import parseLinkHeader from 'parse-link-header'
 import * as utils from './utils.js'
+import { parseLinkHeader } from '@web3-storage/parse-link-header'
 
 
 class Account extends React.Component {

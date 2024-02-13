@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import parseLinkHeader from 'parse-link-header'
 
 import Loading from './Loading.jsx'
 import { Button } from '@instructure/ui-buttons'
@@ -11,8 +10,9 @@ import { View } from '@instructure/ui-view'
 import { ScreenReaderContent } from '@instructure/ui-a11y-content'
 import { Spinner } from '@instructure/ui-spinner'
 import * as utils from './utils'
+import { parseLinkHeader } from '@web3-storage/parse-link-header'
 
-const PER_PAGE = 100
+const PER_PAGE = 2
 
 /**
  * Simple component to display all the sub-account from where we are.
@@ -82,7 +82,10 @@ class AccountsTree extends React.Component {
       url = null
       const json = await response.json()
       data.push(...json)
-      const links = parseLinkHeader(response.headers.get('Link'))
+      let linkHeader = response.headers.get('Link')
+      console.debug(`Parsing ${linkHeader}`)
+      const links = parseLinkHeader(linkHeader)
+      console.debug(links)
       if (links && links.next)
         url = links.next.url
     } while (url)
