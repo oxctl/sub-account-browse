@@ -12,7 +12,7 @@ import { Spinner } from '@instructure/ui-spinner'
 import * as utils from './utils'
 import { parseLinkHeader } from '@web3-storage/parse-link-header'
 
-const PER_PAGE = 2
+const PER_PAGE = 100
 
 /**
  * Simple component to display all the sub-account from where we are.
