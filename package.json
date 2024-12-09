@@ -40,7 +40,7 @@
     "@instructure/ui-modal": "^8.52.0",
     "@instructure/ui-spinner": "^8.52.0",
     "@instructure/ui-svg-images": "^8.52.0",
-    "@instructure/ui-test-utils": "^8.52.0",
+    "@instructure/ui-test-utils": "^10.8.0",
     "@instructure/ui-text": "^8.52.0",
     "@instructure/ui-text-input": "^8.52.0",
     "@instructure/ui-themes": "^8.52.0",
