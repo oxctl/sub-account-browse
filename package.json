@@ -55,7 +55,7 @@
     "uuid": "^8.0.0"
   },
   "devDependencies": {
-    "@oxctl/lti-auto-configuration": "^1.1.10",
+    "@oxctl/lti-auto-configuration": "^2.2.5",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
