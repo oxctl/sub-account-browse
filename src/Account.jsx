@@ -86,7 +86,7 @@ class Account extends React.Component {
   renderIcon(account) {
     const isOpen = this.props.isOpen
     return <IconButton withBackground={false} withBorder={false}
-                       screenReaderLabel={(isOpen) ? 'Collapse sub-accounts' : 'Expand sub-accounts'} margin="x-small"
+                       screenReaderLabel={(isOpen) ? `Collapse ${account.name} sub-accounts` : `Expand ${account.name} sub-accounts`} margin="x-small"
                        onClick={() => this.props.handleIconClick(account.id)}>
       {(isOpen) ? <IconArrowUpLine size="x-small"/> : <IconArrowDownLine size="x-small"/>}
     </IconButton>
