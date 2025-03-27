@@ -5,6 +5,9 @@ import { customMatchers } from './custom-matchers'
 
 expect.extend(customMatchers)
 test('Subaccount browse deployment tests', async ({context, page}, testInfo) => {
+  const TOP_LEVEL_SUBACCOUNT_NAME = 'View Sub-accounts'
+  const SECOND_LEVEL_SUBACCOUNT_NAME = 'VSA3'
+  const LOWER_LEVEL_SUBACCOUNT_NAME = 'VSA3 sub acc 3'
 
   let ltiToolFrame
 
@@ -25,22 +28,22 @@ test('Subaccount browse deployment tests', async ({context, page}, testInfo) => 
   })
 
   await test.step('Can expand and collapse subaccounts', async () => {
-    const secondLevelSubaccount = ltiToolFrame.getByRole('link', {name: 'General testing', exact: true })
+    const secondLevelSubaccount = ltiToolFrame.getByRole('link', {name: SECOND_LEVEL_SUBACCOUNT_NAME, exact: true })
     await expect(secondLevelSubaccount).not.toBeVisible()
-    ltiToolFrame.getByRole('button', {name: 'Expand Testing sub-accounts', exact: true}).click()
+    ltiToolFrame.getByRole('button', {name: `Expand ${TOP_LEVEL_SUBACCOUNT_NAME} sub-accounts`, exact: true}).click()
     await expect(secondLevelSubaccount).toBeVisible()
-    ltiToolFrame.getByRole('button', {name: 'Collapse Testing sub-accounts', exact: true}).click()
+    ltiToolFrame.getByRole('button', {name: `Collapse ${TOP_LEVEL_SUBACCOUNT_NAME} sub-accounts`, exact: true}).click()
     await expect(secondLevelSubaccount).not.toBeVisible()
   })
 
   await test.step('Search works and scrolls to result', async () => {
-    const searchTerm = 'VSA3 sub acc 3'
+    const searchTerm = LOWER_LEVEL_SUBACCOUNT_NAME
     const searchResult = ltiToolFrame.getByRole('link', {name: searchTerm, exact: true})
     await expect(searchResult).not.toBeVisible()
     const searchBox = ltiToolFrame.getByPlaceholder('Search sub-accounts', {exact: true})
     await searchBox.fill(searchTerm)
     await ltiToolFrame.getByRole('button', {name: 'Find'}).click()
-    await expect(searchResult).toBeVisible({timeout: 60000})
-    await expect(searchResult).toBeHumanVisible({timeout: 60000})
-  }, { timeout: 120000 })
+    await expect(searchResult).toBeVisible()
+    await expect(searchResult).toBeHumanVisible()
+  })
 })
