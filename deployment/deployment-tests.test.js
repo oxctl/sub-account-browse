@@ -30,9 +30,9 @@ test('Subaccount browse deployment tests', async ({context, page}, testInfo) => 
   await test.step('Can expand and collapse subaccounts', async () => {
     const secondLevelSubaccount = ltiToolFrame.getByRole('link', {name: SECOND_LEVEL_SUBACCOUNT_NAME, exact: true })
     await expect(secondLevelSubaccount).not.toBeVisible()
-    ltiToolFrame.getByRole('button', {name: `Expand ${TOP_LEVEL_SUBACCOUNT_NAME} sub-accounts`, exact: true}).click()
+    await ltiToolFrame.getByRole('button', {name: `Expand ${TOP_LEVEL_SUBACCOUNT_NAME} sub-accounts`, exact: true}).click()
     await expect(secondLevelSubaccount).toBeVisible()
-    ltiToolFrame.getByRole('button', {name: `Collapse ${TOP_LEVEL_SUBACCOUNT_NAME} sub-accounts`, exact: true}).click()
+    await ltiToolFrame.getByRole('button', {name: `Collapse ${TOP_LEVEL_SUBACCOUNT_NAME} sub-accounts`, exact: true}).click()
     await expect(secondLevelSubaccount).not.toBeVisible()
   })
 
