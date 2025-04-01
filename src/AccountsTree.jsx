@@ -131,7 +131,7 @@ class AccountsTree extends React.Component {
    */
   updateCollections(json, loadedAccounts) {
     /* eslint-disable no-param-reassign */
-    var collections = json
+    let collections = json
       .map(account => ({
         id: account.id,
         name: account.name,
@@ -152,6 +152,8 @@ class AccountsTree extends React.Component {
     collections = { ...this.state.collections, ...collections }
     // Set the account that we know have no children
     loadedAccounts.forEach(account => collections[account].collections = [])
+    // Sort the children alphabetically by their name
+    Object.values(children).forEach((children) => children.sort((a,b) => collections[a].name.localeCompare(collections[b].name)))
     // Update all the children
     Object.entries(children).forEach(([parent, children]) => collections[parent].collections = children)
     return collections
