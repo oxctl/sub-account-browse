@@ -1,7 +1,6 @@
 {
   "setup": {
     "canvas_url": "https://name.instructure.com",
-    "tool_support_url": "https://localhost:8443",
     "proxy_server_url": "https://localhost:8443",
     "lti_tool_origin": "https://localhost:3000",
     "title_suffix": " (user)"
