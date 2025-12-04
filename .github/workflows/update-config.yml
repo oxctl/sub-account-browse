@@ -42,4 +42,3 @@ jobs:
           else
             npx @oxctl/lti-auto-configuration create
           fi
-      
