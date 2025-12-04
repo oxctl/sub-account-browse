@@ -10,21 +10,15 @@ export default defineConfig({
   // not be deployed at the root
   base: './',
   build: {
-    rollupOptions: {
-    },
     // This means we don't have to change the config in cloudflare.
     outDir: 'build'
   },
   server: {
     https: true,
-    port: 3000,
+    port: 3000
 
   },
   plugins: [
-    mkcert({
-      keyFileName: "./localhost-key.pem",
-      certFileName: "./localhost.pem",
-    }),
     react(),
     process.env.CI !== "true" && mkcert(),
   ],
