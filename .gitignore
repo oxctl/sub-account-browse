@@ -1,6 +1,9 @@
 node_modules/
 __build__/
+tool-config/local*.json
 build/
+*.code-workspace
+.env*.local
 npm-debug.log
 yarn-error.log
 .yarnclean

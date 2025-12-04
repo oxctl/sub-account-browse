@@ -13,10 +13,10 @@ const settings = {
     'proxyServer': import.meta.env.VITE_PROXY_URL
   },
   'https://master.canvas-subaccounts.pages.dev': {
-    'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
+    'proxyServer': 'https://tools-dev.canvas.ox.ac.uk'
   },
   'https://canvas-subaccounts.canvas.ox.ac.uk': {
-    'proxyServer': 'https://proxy.canvas.ox.ac.uk'
+    'proxyServer': 'https://tools.canvas.ox.ac.uk'
   }
 }
 
