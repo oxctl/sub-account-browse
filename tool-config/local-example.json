@@ -3,7 +3,7 @@
     "title_suffix": " (user)",
     "tool_support_url": "https://localhost:8443",
     "tool_url": "https://localhost:3000",
-    "lti_registration_id": "universityofoxford-cs-local"
+    "lti_registration_id": "universityofoxford-sa-local"
   },
   "secrets": {
     "canvas_token": "12345~abcd....",
