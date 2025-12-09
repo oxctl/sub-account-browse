@@ -1,8 +1,5 @@
 {
   "config": {
-    "title_suffix": "$TITLE_SUFFIX",
-    "lti_registration_id": "view-subaccounts",
-    "lti_account_id": "self"
   },
   "ltiKey": {
     "tool_configuration": {
