@@ -30,8 +30,8 @@ jobs:
       - name: Update or create tool configuration
         run: |
           npm install -g @oxctl/lti-auto-configuration
-          if npx @oxctl/lti-auto-configuration validate; then
-            npx @oxctl/lti-auto-configuration update
+          if npx lti-config validate; then
+            npx lti-config update
           else
-            npx @oxctl/lti-auto-configuration create
+            npx lti-config create
           fi
