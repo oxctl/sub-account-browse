@@ -2,14 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Loading from './Loading.jsx'
+import ListAccounts from './ListAccounts.jsx'
+import * as utils from './utils'
+
 import { Button } from '@instructure/ui-buttons'
 import { Heading } from '@instructure/ui-heading'
 import { TextInput } from '@instructure/ui-text-input'
-import ListAccounts from './ListAccounts.jsx'
 import { View } from '@instructure/ui-view'
 import { ScreenReaderContent } from '@instructure/ui-a11y-content'
 import { Spinner } from '@instructure/ui-spinner'
-import * as utils from './utils'
+
 import { parseLinkHeader } from '@web3-storage/parse-link-header'
 
 const PER_PAGE = 100
