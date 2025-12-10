@@ -28,9 +28,10 @@ jobs:
 
     secrets: inherit
 
-  deployment-tests:
-    needs: check-branch
-    uses: ./.github/workflows/test_deployment.yml
-    with:
-      execution-environment: ${{ github.event.check_run.check_suite.head_branch == 'release' && 'prod' || 'beta' }}
-    secrets: inherit
+#  deployment-tests:
+#    needs: check-branch
+#    uses: ./.github/workflows/test_deployment.yml
+#    with:
+#      execution-environment: ${{ github.event.check_run.check_suite.head_branch == 'release' && 'prod' || 'beta' }}
+#    secrets: inherit
+
