@@ -6,7 +6,6 @@ import Loading from './Loading.jsx'
 import Error from './Error.jsx'
 
 import { View } from '@instructure/ui-view'
-
 import { LtiTokenRetriever, LaunchOAuth, LtiApplyTheme } from '@oxctl/ui-lti'
 
 
