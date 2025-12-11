@@ -37,6 +37,7 @@
     "developer_key": {
       "name": "View Sub-accounts$TITLE_SUFFIX",
       "redirect_uris": "$TOOL_SUPPORT_URL/lti/login",
+      "notes": "Auto-Config: $CURRENT_DATETIME",
       "scopes": []
     }
   },
@@ -45,6 +46,7 @@
       "name": "View Sub-accounts$TITLE_SUFFIX",
       "require_scopes": true,
       "redirect_uris" : "$TOOL_SUPPORT_URL/login/oauth2/code/$LTI_REGISTRATION_ID",
+      "notes": "Auto-Config: $CURRENT_DATETIME",
       "scopes": [
         "url:GET|/api/v1/accounts/:account_id/courses",
         "url:GET|/api/v1/accounts/:account_id/sub_accounts"
