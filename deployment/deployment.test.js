@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { dismissBetaBanner, getLtiIFrame, waitForNoSpinners, TEST_URL } from '@oxctl/deployment-test-utils'
 
 test.describe('Test deployment', () => {
-  test('The tool should load and display, (amongst other things,) a Find button.', async ({context, page}) => {
+  test('The tool should load and display, (amongst other things,) a Find button.', async ({ page }) => {
     await page.goto(TEST_URL)
     await dismissBetaBanner(page)
     const ltiIFrame = getLtiIFrame(page)
