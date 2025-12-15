@@ -9,7 +9,7 @@ test.describe('Test deployment', () => {
     await waitForNoSpinners(ltiIFrame)
 
     // Check there's the Find button on the page
-    const button = page.getByRole('button', { name: 'Find' })
+    const button = ltiIFrame.getByRole('button', { name: 'Find' })
     await expect(button).toBeVisible({ timeout: 1000 })
   })
 })
