@@ -1,0 +1,5 @@
+.env
+# Playwright outputs
+playwright-report/
+test-results/
+playwright/
