@@ -5,8 +5,9 @@ test.describe('Test deployment', () => {
   test('The tool should load and display, (amongst other things,) a Find button.', async ({ page }) => {
     await page.goto(TEST_URL)
     await dismissBetaBanner(page)
-    await grantAccessIfNeeded(page)
+
     const ltiIFrame = getLtiIFrame(page)
+    await grantAccessIfNeeded(ltiIFrame)
     await waitForNoSpinners(ltiIFrame)
 
     // Check there's the Find button on the page
