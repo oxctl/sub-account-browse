@@ -3,7 +3,7 @@ import { dismissBetaBanner, getLtiIFrame, waitForNoSpinners, TEST_URL, grantAcce
 
 test.describe('Test deployment', () => {
   test('The tool should load and display, (amongst other things,) a Find button.', async ({ page, context }) => {
-    await grantAccessIfNeeded(page, context, TEST_URL)
+
     await dismissBetaBanner(page)
 
     const ltiIFrame = getLtiIFrame(page)
