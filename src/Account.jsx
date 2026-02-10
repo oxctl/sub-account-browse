@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Link } from '@instructure/ui-link'
 import { Text } from '@instructure/ui-text'
 import { IconButton } from '@instructure/ui-buttons'
@@ -6,7 +7,9 @@ import { IconArrowDownLine, IconArrowUpLine } from '@instructure/ui-icons'
 import { View } from '@instructure/ui-view'
 import { Tooltip } from '@instructure/ui-tooltip'
 import { Spinner } from '@instructure/ui-spinner'
+
 import * as utils from './utils.js'
+
 import { parseLinkHeader } from '@web3-storage/parse-link-header'
 
 

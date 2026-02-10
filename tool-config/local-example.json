@@ -1,9 +1,9 @@
 {
   "setup": {
-    "canvas_url": "https://name.instructure.com",
-    "proxy_server_url": "https://localhost:8443",
-    "lti_tool_origin": "https://localhost:3000",
-    "title_suffix": " (user)"
+    "title_suffix": " (user)",
+    "tool_support_url": "https://localhost:8443",
+    "tool_url": "https://localhost:3000",
+    "lti_registration_id": "universityofoxford-sa-local"
   },
   "secrets": {
     "canvas_token": "12345~abcd....",

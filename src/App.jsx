@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode'
 import AccountsTree from './AccountsTree.jsx'
 import Loading from './Loading.jsx'
 import Error from './Error.jsx'
+
 import { View } from '@instructure/ui-view'
 import { LtiTokenRetriever, LaunchOAuth, LtiApplyTheme } from '@oxctl/ui-lti'
 
@@ -13,10 +14,10 @@ const settings = {
     'proxyServer': import.meta.env.VITE_PROXY_URL
   },
   'https://master.canvas-subaccounts.pages.dev': {
-    'proxyServer': 'https://proxy-dev.canvas.ox.ac.uk'
+    'proxyServer': 'https://tools-dev.canvas.ox.ac.uk'
   },
   'https://canvas-subaccounts.canvas.ox.ac.uk': {
-    'proxyServer': 'https://proxy.canvas.ox.ac.uk'
+    'proxyServer': 'https://tools.canvas.ox.ac.uk'
   }
 }
 

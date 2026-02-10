@@ -55,14 +55,14 @@
     "uuid": "^8.0.0"
   },
   "devDependencies": {
-    "@oxctl/lti-auto-configuration": "^2.2.5",
+    "@oxctl/lti-auto-configuration": "^2.6.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.2.0",
-    "vite-plugin-mkcert": "^1.17.3",
-    "vitest": "^3.0.7"
+    "@vitejs/plugin-react": "^4.7.0",
+    "vite": "^6.4.1",
+    "vite-plugin-mkcert": "^1.17.9",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=20.0.0",

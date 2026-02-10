@@ -1,8 +1,5 @@
 {
   "config": {
-    "title_suffix": "$TITLE_SUFFIX",
-    "lti_registration_id": "view-subaccounts",
-    "lti_account_id": "self"
   },
   "ltiKey": {
     "tool_configuration": {
@@ -10,9 +7,9 @@
         "public_jwk": {},
         "title": "View Sub-accounts$TITLE_SUFFIX",
         "description": "A read only view of the sub-accounts.",
-        "target_link_uri": "$LTI_TOOL_URL",
-        "oidc_initiation_url": "$LTI_SERVER_URL/lti/login_initiation/",
-        "public_jwk_url": "$LTI_SERVER_URL/.well-known/jwks.json",
+        "target_link_uri": "$TOOL_URL",
+        "oidc_initiation_url": "$TOOL_SUPPORT_URL/lti/login_initiation/",
+        "public_jwk_url": "$TOOL_SUPPORT_URL/.well-known/jwks.json",
         "scopes": [],
         "extensions": [
           {
@@ -39,7 +36,8 @@
     },
     "developer_key": {
       "name": "View Sub-accounts$TITLE_SUFFIX",
-      "redirect_uris": "$LTI_SERVER_URL/lti/login",
+      "redirect_uris": "$TOOL_SUPPORT_URL/lti/login",
+      "notes": "Auto-Config: $CURRENT_DATETIME",
       "scopes": []
     }
   },
@@ -47,7 +45,8 @@
     "developer_key": {
       "name": "View Sub-accounts$TITLE_SUFFIX",
       "require_scopes": true,
-      "redirect_uris" : "$PROXY_SERVER_URL/login/oauth2/code/$LTI_REGISTRATION_ID",
+      "redirect_uris" : "$TOOL_SUPPORT_URL/login/oauth2/code/$LTI_REGISTRATION_ID",
+      "notes": "Auto-Config: $CURRENT_DATETIME",
       "scopes": [
         "url:GET|/api/v1/accounts/:account_id/courses",
         "url:GET|/api/v1/accounts/:account_id/sub_accounts"
@@ -98,11 +97,11 @@
       }
     },
     "origins": [
-      "$LTI_TOOL_URL"
+      "$TOOL_URL"
     ],
     "sign": true,
     "secret": null,
-    "issuer": "$LTI_SERVER_URL",
+    "issuer": "$TOOL_SUPPORT_URL",
     "nrpsAllowedRoles": []
   }
 }
