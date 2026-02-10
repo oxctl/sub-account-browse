@@ -28,12 +28,12 @@ jobs:
 
     secrets: inherit
 
-#  deployment-tests:
-#    needs:
-#       - check-branch
-#       - update-config # Ensure config is updated before checking its working
-#    uses: ./.github/workflows/test_deployment.yml
-#    with:
-#      execution-environment: ${{ github.event.check_run.check_suite.head_branch == 'release' && 'prod' || 'beta' }}
-#    secrets: inherit
+  deployment-tests:
+    needs:
+       - check-branch
+       - update-config # Ensure config is updated before checking it's working
+    uses: ./.github/workflows/test_deployment.yml
+    with:
+      execution-environment: ${{ github.event.check_run.check_suite.head_branch == 'release' && 'prod' || 'beta' }}
+    secrets: inherit
 
