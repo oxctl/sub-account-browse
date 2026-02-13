@@ -45,7 +45,7 @@ npx @oxctl/lti-auto-configuration delete
 
 ## Deployment
 
-This code is deployed to Cloudflare. Aa automatic deploy to the Preview environment happens when a new commit is made to `master`.
+This code is deployed to Cloudflare. An automatic deploy to the Preview environment happens when a new commit is made to `master`.
 
 ### Releasing
 
