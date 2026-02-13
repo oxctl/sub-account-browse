@@ -53,7 +53,7 @@ To release the latest code, merge the `master` branch into the `release` branch.
 The best way to do this is to create a PR from `master` to `release`, this allows you to check what's going to be released.
 There is a [GitHub action](actions/workflows/release.yml) that can be manually run to do this.
 
-Alternatively to do this locally run checkout the release branch, fetch the latest code from the `origin` and run:
+Alternatively, to do this locally, check out the `release` branch, fetch the latest code from `origin`, and run:
 ```shell
 git merge origin/master
 ```
