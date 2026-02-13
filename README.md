@@ -51,7 +51,7 @@ This code is deployed to Cloudflare. An automatic deploy to the Preview environm
 
 To release the latest code, merge the `master` branch into the `release` branch. Cloudflare will then deploy this to the Production environment.
 The best way to do this is to create a PR from `master` to `release`, this allows you to check what's going to be released.
-There is a [GitHub action](/actions/workflows/release.yml) that can be manually run to do this.
+There is a [GitHub action](https://github.com/oxctl/sub-account-browse/actions/workflows/release.yml) that can be manually run to do this.
 
 Alternatively, to do this locally, check out the `release` branch, fetch the latest code from `origin`, and run:
 ```shell
