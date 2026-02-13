@@ -58,7 +58,7 @@ Alternatively, to do this locally, check out the `release` branch, fetch the lat
 git merge origin/master
 ```
 
-To see what is about to go into a release you can preview the changes between [master and release](compare/release...master), then to double check a PR can be created to merge the changes, reviewed and merged (at which point the release branch is built and deployed).
+To see what is about to go into a release you can preview the changes between [master and release](https://github.com/oxctl/sub-account-browse/compare/release...master), then to double check a PR can be created to merge the changes, reviewed and merged (at which point the release branch is built and deployed).
 
 ## Sentry
 
