@@ -1,6 +1,6 @@
 # Subaccount Browse
 
-This is small tool to allow sub-account administrators to browse the sub-account hierarchy. It is useful becuase of the lack of granularity in permissions relating to the Canvas sub-account hierarchy.
+This is a small tool to allow sub-account administrators to browse the sub-account hierarchy. It is useful because of the lack of granularity in permissions relating to the Canvas sub-account hierarchy.
 
 ## SSL
 
