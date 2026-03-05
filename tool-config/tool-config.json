@@ -98,7 +98,6 @@
     "origins": [
       "$TOOL_URL"
     ],
-    "sign": true,
     "secret": null,
     "issuer": "$TOOL_SUPPORT_URL",
     "nrpsAllowedRoles": []
