@@ -44,6 +44,12 @@ jobs:
       - run: npm ci
       - run: npm run install-browsers
       - run: npm test
+      - name: Warn about skipped tests
+        if: always()
+        run: |
+          if grep -rE 'test\.(fixme|skip)' ./*.test.* 2>/dev/null; then
+            echo "::warning::One or more deployment tests are currently skipped — check deployment/deployment.test.js and re-enable once upstream issues are resolved"
+          fi
       - name: Upload test-results
         uses: actions/upload-artifact@v4
         if: always()
