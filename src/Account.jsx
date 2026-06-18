@@ -22,36 +22,18 @@ class Account extends React.Component {
     courseCount: null
   }
 
-  resolveCourseCount = async (response, links, firstPageItems) => {
-    if (!(links && links.next && links.next.url)) {
-      return firstPageItems
-    }
-
-    let total = firstPageItems
-    let url = links.next.url
-    while (url) {
-      const nextResponse = await utils.fetchWithAuth(url, this.props.token).then(utils.rejectFailures)
-      const nextItems = await nextResponse.json().then(json => json.length)
-      total += nextItems
-      const nextLinks = parseLinkHeader(nextResponse.headers.get('Link'))
-      url = (nextLinks && nextLinks.next) ? nextLinks.next.url : null
-    }
-
-    return total
-  }
-
   loadCourses = async () => {
     this.setState({ isLoading: true })
-    try {
-      const response = await utils.fetchWithAuth(this.props.url + '/api/v1/accounts/' + this.props.account.id + '/courses?per_page=100', this.props.token)
-        .then(utils.rejectFailures)
-      const links = parseLinkHeader(response.headers.get('Link'))
-      const items = await response.json().then(json => json.length)
-      const courseCount = await this.resolveCourseCount(response, links, items)
-      this.setState({ courseCount, isLoaded: true })
-    } finally {
-      this.setState({ isLoading: false })
+    const response = await utils.fetchWithAuth(this.props.url + '/api/v1/accounts/' + this.props.account.id + '/courses?per_page=1', this.props.token)
+      .then(utils.rejectFailures)
+      .finally(() => this.setState({ isLoading: false }))
+    const links = parseLinkHeader(response.headers.get('Link'))
+    const items = await response.json().then(json => json.length)
+    if (links && links.last) {
+      const total = links.last.page
+      this.setState({ courseCount: (total > 1)?total:items })
     }
+    this.setState({isLoaded: true})
   }
 
   shouldLoad = () => !this.state.isLoaded && !this.state.isLoading
