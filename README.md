@@ -1,8 +1,6 @@
 # Subaccount Browse
 
-[![Frontend DEV](https://github.com/oxctl/sub-account-browse/actions/workflows/frontend_dev.yml/badge.svg)](https://github.com/oxctl/sub-account-browse/actions/workflows/frontend_dev.yml)
-
-This small tool is to allow people to browse the sub-account hierarchy who don't have permission to change the sub-account hierarchy.
+This is a small tool to allow sub-account administrators to browse the sub-account hierarchy. It is useful because of the lack of granularity in permissions relating to the Canvas sub-account hierarchy.
 
 ## SSL
 
@@ -21,103 +19,41 @@ This tool needs to have a developer key setup for it with permission to view acc
 
 ### Automatic Configuration
 
-There is [lti-auto-configuration](https://github.com/oxctl/lti-auto-configuration) that will attempt to automatically configure Canvas and the Tool Support server (it is installed as a development dependency). To use this copy the configuration example:
+There is [lti-auto-configuration](https://github.com/oxctl/lti-auto-configuration) which will attempt to automatically configure Canvas and the Tool Support server (it is installed as a development dependency). To use this, run the initialisation process which will generate a local configuration example:
 
 ```bash
-cp tool-config/local-example.json tool-config/local.json
+npx @oxctl/lti-auto-configuration setup
 ```
-Then configure the values in `local.json` to match your setup. Then to deploy the tool run:
+Then configure the values in `local.json` to match your setup. 
+
+To deploy the tool run:
 ```bash
-npx @oxctl/lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -c
+npx @oxctl/lti-auto-configuration create
 ```
-This should add a copy of the tool and make it available for testing. You can then tidy up with:
+This should add a copy of the tool and make it available for testing. 
+
+Should you change the config and need to update:
 ```bash
-npx @oxctl/lti-auto-configuration -t tool-config/tool-config.json -s tool-config/local.json  -ss tool-config/local.json  -d
+npx @oxctl/lti-auto-configuration update
 ```
 
-### LTI Key
+You can then tidy up with:
+```bash
+npx @oxctl/lti-auto-configuration delete
+```
 
-To configure the tool in Canvas setup a new LTI Developer key:
-
-* Key name: View Sub-accounts
-
-
-* Owner email: 
-  #### Production
-  - acit-sys-apps@maillist.ox.ac.uk
-  #### Dev
-  - Enter your work email
-
-* Redirect URIs: 
-  #### Production
-  - https://lti.canvas.ox.ac.uk/lti/login
-  #### Dev
-  - https://lti-dev.canvas.ox.ac.uk/lti/login
-
-* Method: Manual entry
-* Title: View Sub-accounts
-* Description: A read only view of the sub-accounts.
-* Target Link URI:
-  #### Production
-  - https://canvas-subaccounts.canvas.ox.ac.uk
-  #### Dev
-  - https://master.canvas-subaccounts.pages.dev
-* OpenID Connect Initiation URL: 
-  #### Production
-  - https://lti.canvas.ox.ac.uk/lti/login_initiation/universityofoxford-sa-`yourFirstName`
-  #### Dev
-  - https://lti-dev.canvas.ox.ac.uk/lti/login_initiation/oxeval-sa-`yourFirstName`
-
-* JWK Method: Public JWK URL - 
-  #### Production
-  - https://lti.canvas.ox.ac.uk/.well-known/jwks.json
-  #### Dev
-  - https://lti-dev.canvas.ox.ac.uk/.well-known/jwks.json
-  
-* Additional Settings: Custom fields:
-
-    canvas_account_id=${Canvas.account.id}
-    canvas_account_name=${Canvas.account.name}
-    canvas_api_base_url=$Canvas.api.baseUrl
-    com_instructure_brand_config_json_url=$com.instructure.brandConfigJSON.url
-    canvas_user_prefers_high_contrast=${Canvas.user.prefersHighContrast}
-
-
-* Privacy Level: Public
-* Placements: Account Navigation
-
-### API Key
-
-To configure the proxy a API Developer key is needed:
-
-* Key name: View Sub-accounts
-* Owner email: acit-sys-apps@maillist.ox.ac.uk
-* Redirect URIs: 
-  #### Production
-  - https://proxy.canvas.ox.ac.uk/login/oauth2/code/universityofoxford-sa-`yourFirstName`
-  #### Dev
-  - https://proxy-dev.canvas.ox.ac.uk/login/oauth2/code/oxeval-sa-`yourFirstName`
-
-* Enforce Scopes: Checked
-* Scopes:
-  * url:GET|/api/v1/accounts/:account_id/courses
-  * url:GET|/api/v1/accounts/:account_id/sub_accounts
 
 ## Deployment
 
-This code is deployed to Cloudflare.
-
-### Development 
-
-The deploy to development is done automatically when a new commit is made to master.
+This code is deployed to Cloudflare. An automatic deploy to the Preview environment happens when a new commit is made to `master`.
 
 ### Releasing
 
-To release the latest code merge the master branch into the release branch Cloudflare will then deploy this to production.
+To release the latest code, merge the `master` branch into the `release` branch. Cloudflare will then deploy this to the Production environment.
 The best way to do this is to create a PR from `master` to `release`, this allows you to check what's going to be released.
-There is a GitHub action that can be manually run to do this.
+There is a [GitHub action](https://github.com/oxctl/sub-account-browse/actions/workflows/release.yml) that can be manually run to do this.
 
-Alternatively to do this locally run checkout the release branch, fetch the latest code from the origin and run:
+Alternatively, to do this locally, check out the `release` branch, fetch the latest code from `origin`, and run:
 ```shell
 git merge origin/master
 ```

@@ -52,7 +52,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "uuid": "^8.0.0"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@oxctl/lti-auto-configuration": "^2.6.0",

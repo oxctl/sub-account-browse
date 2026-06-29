@@ -35,8 +35,8 @@ jobs:
       run:
         working-directory: deployment
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: 'deployment/.nvmrc'
           cache: 'npm'
@@ -44,8 +44,20 @@ jobs:
       - run: npm ci
       - run: npm run install-browsers
       - run: npm test
+      - name: Warn about skipped tests
+        if: always()
+        continue-on-error: true
+        run: |
+          if grep -rE 'test\.(fixme|skip)' ./*.test.* 2>/dev/null; then
+            echo "::warning::One or more deployment tests are currently skipped — check deployment/deployment.test.js and re-enable once upstream issues are resolved"
+            echo "## ⚠️ Skipped deployment tests" >> $GITHUB_STEP_SUMMARY
+            echo "One or more tests are marked \`fixme\` or \`skip\` in \`deployment/deployment.test.js\`." >> $GITHUB_STEP_SUMMARY
+            echo "Re-enable them once upstream issues are resolved." >> $GITHUB_STEP_SUMMARY
+            grep -rE 'test\.(fixme|skip)' ./*.test.* >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
       - name: Upload test-results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: ${{ github.event.repository.name }}-test-results-${{ github.run_number }}-${{ github.run_attempt }}
