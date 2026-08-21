@@ -1,0 +1,35 @@
+# Top-level configuration
+
+# Although we don't generally use this, it means KV commands use this as a prefix.
+name = "sub-account-browse"
+
+# Output directory
+pages_build_output_dir = "build"
+
+[env.preview.vars]
+#
+# This section sets up all the required environment variables, however, in order for Sentry to work, 
+# some secrets need to be manually added to the Cloudflare configuration. These are detailed below.
+#
+
+#                            **********                              *****************
+# This needs setting up as a * SECRET * in cloudflare (for Vite App) VITE_SENTRY_DSN = 
+#                            **********                              *****************
+
+
+VITE_SENTRY_ENV = "beta"
+VITE_SENTRY_TRACES_SAMPLE_RATE = "1.0"
+
+[env.production.vars]
+#
+# This section sets up all the required environment variables, however, in order for Sentry to work, 
+# some secrets need to be manually added to the Cloudflare configuration. These are detailed below.
+#
+
+#                            **********                              *****************
+# This needs setting up as a * SECRET * in cloudflare (for Vite App) VITE_SENTRY_DSN = 
+#                            **********                              *****************
+
+
+VITE_SENTRY_ENV = "prod"
+VITE_SENTRY_TRACES_SAMPLE_RATE = "1.0"
