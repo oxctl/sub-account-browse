@@ -4,17 +4,14 @@ import { Billboard } from '@instructure/ui-billboard'
 import { IconWarningLine } from '@instructure/ui-icons'
 
 // Displays a message across the screen.
-class Error extends React.Component {
-  render() {
-    let { heading, message, children } = this.props
-    return (message) ? (<Billboard
+const Error = ({ heading, message, children }) => {
+  return (message) ? (<Billboard
       margin="x-large"
       heading={heading}
       message={message}
       size="large"
       hero={(size) => <IconWarningLine size={size}/>}
     />) : children
-  }
 }
 
 Error.propTypes = {
