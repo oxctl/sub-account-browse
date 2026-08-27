@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 
 import jwtDecode from 'jwt-decode'
 import AccountsTree from './AccountsTree.jsx'
@@ -21,8 +21,8 @@ const settings = {
   }
 }
 
-class App extends React.Component {
-  state = {
+const App = () => {
+  const [state, setState] = useState({
     tryLoading: true,
     comInstructureBrandConfigJsonUrl: null,
     accountId: null,
@@ -32,63 +32,53 @@ class App extends React.Component {
     loading: true,
     error: null,
     canvasUserPrefersHighContrast: false
-  }
+  })
+  const servers = settings[window.location.origin]
 
-  constructor(props, context) {
-    super(props, context)
-    this.servers = settings[window.location.origin]
-  }
-
-  updateToken = (token) => {
+  const updateToken = useCallback((token) => {
     const jwt = jwtDecode(token)
-    this.setState({
+    setState(current => ({ ...current,
       comInstructureBrandConfigJsonUrl: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].com_instructure_brand_config_json_url,
       canvasUserPrefersHighContrast: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_user_prefers_high_contrast === "true",
       accountId: parseInt(jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_id),
       accountName: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_account_name,
       canvasUrl: jwt['https://purl.imsglobal.org/spec/lti/claim/custom'].canvas_api_base_url,
-      proxyUrl: this.servers.proxyServer,
+      proxyUrl: servers.proxyServer,
       token: token,
       loading: false
-    })
-  }
+    }))
+  }, [servers.proxyServer])
 
-  render() {
-    return (
-      <LtiTokenRetriever handleJwt={this.updateToken}>
-        <LtiApplyTheme url={this.state.comInstructureBrandConfigJsonUrl} highContrast={this.state.canvasUserPrefersHighContrast}>
+  const handleError = useCallback((reason) => {
+    if (reason) setState(current => ({ ...current, error: reason.message ? reason.message : reason }))
+  }, [])
+
+  const handle403 = useCallback(() => {
+    setState(current => ({ ...current, needsToken: true }))
+  }, [])
+
+  const renderContent = () => <LaunchOAuth promptLogin={state.needsToken}
+                        accessToken={state.token}
+                        server={{proxyServer: state.proxyUrl}}
+                        promptUserLogin={() => setState(current => ({ ...current, needsToken: false }))}>
+      <AccountsTree token={state.token} url={state.proxyUrl} accountId={state.accountId}
+                    accountName={state.accountName} canvasUrl={state.canvasUrl}
+                    handle403={handle403}
+                    handleError={handleError}
+      />
+    </LaunchOAuth>
+
+  return (
+      <LtiTokenRetriever handleJwt={updateToken}>
+        <LtiApplyTheme url={state.comInstructureBrandConfigJsonUrl} highContrast={state.canvasUserPrefersHighContrast}>
           <View padding="small" as="div">
-            <Error message={this.state.error}>
-              {(this.state.loading) ? <Loading/> : this.renderContent()}
+            <Error message={state.error}>
+              {(state.loading) ? <Loading/> : renderContent()}
             </Error>
           </View>
         </LtiApplyTheme>
       </LtiTokenRetriever>
     )
-  }
-
-  renderContent() {
-    return <LaunchOAuth promptLogin={this.state.needsToken}
-                        accessToken={this.state.token}
-                        server={{proxyServer: this.state.proxyUrl}}
-                        promptUserLogin={() => this.setState({ needsToken: false })}>
-      <AccountsTree token={this.state.token} url={this.state.proxyUrl} accountId={this.state.accountId}
-                    accountName={this.state.accountName} canvasUrl={this.state.canvasUrl}
-                    handle403={this.handle403}
-                    handleError={this.handleError}
-      />
-    </LaunchOAuth>
-  }
-
-  handleError = (reason) => {
-    if (reason) {
-      this.setState({ error: (reason.message) ? reason.message : reason })
-    }
-  }
-
-  handle403 = () => {
-    this.setState({ needsToken: true })
-  }
 }
 
 export default App
