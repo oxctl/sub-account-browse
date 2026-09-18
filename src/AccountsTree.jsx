@@ -90,7 +90,7 @@ const AccountsTree = (props) => {
     const ordered = []
     const visit = (id) => {
       ordered.push(id)
-        (collections[id].collections || []).forEach(visit)
+      ;(collections[id].collections || []).forEach(visit)
     }
     visit(rootId)
 
