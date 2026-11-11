@@ -44,14 +44,14 @@
     "@instructure/ui-tooltip": "^10.12.0",
     "@instructure/ui-tree-browser": "^10.12.0",
     "@instructure/ui-view": "^10.12.0",
-    "@oxctl/ui-lti": "^1.5.1",
+    "@oxctl/ui-lti": "^10.6.0",
     "@sentry/react": "^8.37.1",
     "@web3-storage/parse-link-header": "^3.1.0",
     "jwt-decode": "^3.1.2",
     "promise.prototype.finally": "^3.1.1",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "uuid": "^14.0.0"
   },
   "devDependencies": {
